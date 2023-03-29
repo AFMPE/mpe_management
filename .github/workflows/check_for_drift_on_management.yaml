@@ -1,0 +1,24 @@
+name: Check for infrastructure drift on Management
+
+on:
+  schedule:
+    - cron: 0 8 * * *
+
+jobs:
+  check_drift:
+    runs-on: ubuntu-latest
+    name: Check for drift of MPE Transport terraform configuration
+    env:
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      ARM_CLIENT_ID: ${{ secrets.AZURE_AD_CLIENT_ID }}
+      ARM_CLIENT_SECRET: ${{ secrets.AZURE_AD_CLIENT_SECRET }}
+      ARM_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+      ARM_TENANT_ID: ${{ secrets.AZURE_AD_TENANT_ID }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Check
+        uses: azurenoops/terraform-github-actions/terraform-check@v1.34.2
+        with:
+          path: src
