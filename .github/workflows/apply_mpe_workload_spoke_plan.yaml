@@ -5,24 +5,20 @@ on:
     inputs:
       workload-subscription-id:
         type: string
-        description: The subscription ID of the workload subscription
-      message:
         required: true
+        description: The subscription ID of the workload subscription
       workload-name:
         type: string
-        description: The name of the workload
-      message:
         required: true
+        description: The name of the workload
       hub-resource-id:
         type: string
-        description: The resource ID of the hub to which the spoke will be connected       
-      message:
         required: true
+        description: The resource ID of the hub to which the spoke will be connected       
       firewall-private-ip-address:
         type: string
-        description: The private IP address of the firewall
-      message:
         required: true
+        description: The private IP address of the firewall
       create-plan:
         type: boolean
         required: false
