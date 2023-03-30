@@ -32,8 +32,8 @@ module "mod_workload_network" {
   deploy_environment = local.deploy_environment
   org_name           = local.org_name
   environment        = local.environment
-  workload_name      = local.ops_name
-
+  workload_name      = local.wl_name
+  
   ##################################################
   ## Operations Spoke Configuration   (Default)  ###
   ##################################################
@@ -42,19 +42,19 @@ module "mod_workload_network" {
   is_spoke_deployed_to_same_hub_subscription = local.deployed_to_hub_subscription
 
   # Provide valid VNet Address space for spoke virtual network.  
-  virtual_network_address_space = local.ops_vnet_address_space
+  virtual_network_address_space = local.wl_vnet_address_space
 
   # Provide valid subnet address prefix for spoke virtual network. Subnet naming is based on default naming standard
-  spoke_subnet_address_prefix                         = local.ops_subnet_addresses
-  spoke_subnet_service_endpoints                      = local.ops_subnet_service_endpoints
+  spoke_subnet_address_prefix                         = local.wl_subnet_addresses
+  spoke_subnet_service_endpoints                      = local.wl_subnet_service_endpoints
   spoke_private_endpoint_network_policies_enabled     = false
   spoke_private_link_service_network_policies_enabled = true
 
   # Hub Virtual Network ID
-  hub_virtual_network_id = local.hub_virtual_network_id
+  hub_virtual_network_id = var.hub_virtual_network_id
 
   # Firewall Private IP Address 
-  hub_firewall_private_ip_address = local.firewall_private_ip
+  hub_firewall_private_ip_address = var.firewall_private_ip
 
   # (Optional) Operations Network Security Group
   # This is default values, do not need this if keeping default values
@@ -64,7 +64,7 @@ module "mod_workload_network" {
   deny_all_inbound = local.deny_all_inbound
 
   # Network Security Group Rules to apply to the Operatioms Virtual Network
-  nsg_additional_rules = local.ops_nsg_rules
+  nsg_additional_rules = local.wl_nsg_rules
 
   #############################
   ## Misc Configuration     ###
@@ -75,5 +75,5 @@ module "mod_workload_network" {
   enable_resource_locks = local.enable_resource_locks
 
   # Tags
-  add_tags = local.operations_resources_tags # Tags to be applied to all resources
+  add_tags = local.default_tags # Tags to be applied to all resources
 }

@@ -1,15 +1,18 @@
-# This is a sample configuration file for the MPE Landing Zone
+# Copyright (c) Microsoft Corporation.
+# Licensed under the MIT License.
 
-# This file is used to configure the MPE Landing Zone.  It is used to set the default values for the variables used in the MPE Landing Zone.  The values in this file can be overridden by setting the same variable in the terraform.tfvars file.
+# This is a sample configuration file for the MPE Landing Zone
+# This file is used to configure the MPE Landing Zone.  
+# It is used to set the default values for the variables used in the MPE Landing Zone.  The values in this file can be overridden by setting the same variable in the terraform.tfvars file.
 
 # Subscription Configuration
 
 #
 required = {
   org_name           = "ampe"
-  deploy_environment = "prod"
-  environment        = "public"
-  metadata_host      = "management.azure.com"
+  deploy_environment = "prod" # dev | test | prod
+  environment        = "public" # public | usgovernement
+  metadata_host      = "management.azure.com" # management.azure.com | management.usgovcloudapi.net | management.chinacloudapi.cn | management.microsoftazure.de
 }
 
 default_location      = "eastus"
