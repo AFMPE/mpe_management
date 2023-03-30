@@ -5,6 +5,17 @@
 # Global Configuration
 #######################
 
+variable "required" {
+  description = "A map of required variables for the deployment"
+  default = null
+}
+
+variable "default_tags" {
+  type        = map(string)
+  description = "If specified, will set the default tags for all resources deployed by this module where supported."
+  default     = {}
+}
+
 variable "subscription_id" {
   description = "The Azure Subscription ID where the resources in this module should be deployed."
   type        = string

@@ -44,7 +44,7 @@ locals {
       source_port_range          = "*"
       destination_port_ranges    = ["22", "80", "443", "3389"]
       source_address_prefixes    = ["10.0.120.0/26", "10.0.115.0/26"]
-      destination_address_prefix = var.wl_vnet_address_space
+      destination_address_prefix = "${var.wl_vnet_address_space}"
     },
   ]
 }
