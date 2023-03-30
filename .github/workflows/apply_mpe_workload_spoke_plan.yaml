@@ -6,23 +6,23 @@ on:
       workload_subscription_id:
         type: string
         required: true
-        description: The subscription ID of the workload subscription
+        description: 'The subscription ID of the workload subscription'
       workload_name:
         type: string
         required: true
-        description: The name of the workload
+        description: 'The name of the workload'
       hub_resource_id:
         type: string
         required: true
-        description: The resource ID of the hub to which the spoke will be connected       
+        description: 'The resource ID of the hub to which the spoke will be connected'      
       firewall_private_ipaddress:
         type: string
         required: true
-        description: The private IP address of the firewall
+        description: 'The private IP address of the firewall'
       create_plan:
         type: boolean
         required: false
-        description: Create a plan for the workload spoke
+        description: 'Create a plan for the workload spoke'
 
 permissions:
   contents: read
@@ -48,10 +48,10 @@ jobs:
         with:
           path: src
           variables: |
-            subscription_id  = "${{ github.event.inputs.workload-subscription-id }}"
-            workload_name    = "${{ github.event.inputs.workload-name }}"
-            hub_resource_id = "${{ github.event.inputs.hub-resource-id }}"
-            firewall_private_ip_address = "${{ github.event.inputs.firewall-private-ip-address }}"
+            subscription_id  = "${{ github.event.inputs.workload_subscription_id }}"
+            workload_name    = "${{ github.event.inputs.workload_name }}"
+            hub_resource_id = "${{ github.event.inputs.hub-resource_id }}"
+            firewall_private_ip_address = "${{ github.event.inputs.firewall_private_ipaddress }}"
           var_file: |
             src/tfvars/production/deploy.prod.spoke.tfvars
 
@@ -60,9 +60,9 @@ jobs:
         with:
           path: src/modules/workload_spoke
           variables: |
-            subscription_id  = "${{ github.event.inputs.workload-subscription-id }}"
-            workload_name    = "${{ github.event.inputs.workload-name }}"
-            hub_resource_id = "${{ github.event.inputs.hub-resource-id }}"
-            firewall_private_ip_address = "${{ github.event.inputs.firewall-private-ip-address }}"
+            subscription_id  = "${{ github.event.inputs.workload_subscription_id }}"
+            workload_name    = "${{ github.event.inputs.workload_name }}"
+            hub_resource_id = "${{ github.event.inputs.hub-resource_id }}"
+            firewall_private_ip_address = "${{ github.event.inputs.firewall_private_ipaddress }}"
           var_file: |
             src/tfvars/production/deploy.prod.spoke.tfvars
