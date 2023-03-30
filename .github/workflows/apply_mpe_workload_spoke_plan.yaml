@@ -22,6 +22,7 @@ on:
       create_plan:
         type: boolean
         required: false
+        default: false
         description: 'Create a plan for the workload spoke'
 
 permissions:
@@ -43,15 +44,15 @@ jobs:
         uses: actions/checkout@v3
 
       - name: MPE Workload Spoke terraform plan
-        if: ${{ github.event.inputs.create-plan == true }}
+        if: ${{ github.event.inputs.create_plan == true }}
         uses: azurenoops/terraform-github-actions/terraform-plan@v1.34.2
         with:
           path: src
           variables: |
             subscription_id  = "${{ github.event.inputs.workload_subscription_id }}"
             workload_name    = "${{ github.event.inputs.workload_name }}"
-            hub_resource_id = "${{ github.event.inputs.hub-resource_id }}"
-            firewall_private_ip_address = "${{ github.event.inputs.firewall_private_ipaddress }}"
+            hub_virtual_network_id = "${{ github.event.inputs.hub_resource_id }}"
+            firewall_private_ip = "${{ github.event.inputs.firewall_private_ipaddress }}"
           var_file: |
             src/tfvars/production/deploy.prod.spoke.tfvars
 
@@ -62,7 +63,7 @@ jobs:
           variables: |
             subscription_id  = "${{ github.event.inputs.workload_subscription_id }}"
             workload_name    = "${{ github.event.inputs.workload_name }}"
-            hub_resource_id = "${{ github.event.inputs.hub-resource_id }}"
-            firewall_private_ip_address = "${{ github.event.inputs.firewall_private_ipaddress }}"
+            hub_virtual_network_id = "${{ github.event.inputs.hub_resource_id }}"
+            firewall_private_ip = "${{ github.event.inputs.firewall_private_ipaddress }}"
           var_file: |
             src/tfvars/production/deploy.prod.spoke.tfvars
