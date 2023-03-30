@@ -24,4 +24,4 @@ jobs:
       - name: terraform apply
         uses: azurenoops/terraform-github-actions/terraform-apply@v1.34.2
         with:
-          path: src/workload_spoke
+          path: src/modules/service_alerts

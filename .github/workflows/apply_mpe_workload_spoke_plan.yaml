@@ -2,6 +2,31 @@ name: Apply MPE Workload Spoke terraform plan
 
 on:
   workflow_dispatch:
+    inputs:
+      workload-subscription-id:
+        type: string
+        description: The subscription ID of the workload subscription
+      message:
+        required: true
+      workload-name:
+        type: string
+        description: The name of the workload
+      message:
+        required: true
+      hub-resource-id:
+        type: string
+        description: The resource ID of the hub to which the spoke will be connected       
+      message:
+        required: true
+      firewall-private-ip-address:
+        type: string
+        description: The private IP address of the firewall
+      message:
+        required: true
+      create-plan:
+        type: boolean
+        required: false
+        description: Create a plan for the workload spoke
 
 permissions:
   contents: read
@@ -15,13 +40,33 @@ jobs:
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       ARM_CLIENT_ID: ${{ secrets.AZURE_AD_CLIENT_ID }}
       ARM_CLIENT_SECRET: ${{ secrets.AZURE_AD_CLIENT_SECRET }}
-      ARM_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+      ARM_SUBSCRIPTION_ID: ${{ secrets.AZURE_PROD_SUBSCRIPTION_ID }}
       ARM_TENANT_ID: ${{ secrets.AZURE_AD_TENANT_ID }}
     steps:
       - name: Checkout
         uses: actions/checkout@v3
 
-      - name: terraform apply
+      - name: MPE Workload Spoke terraform plan
+        if: ${{ github.event.inputs.create-plan == true }}
+        uses: azurenoops/terraform-github-actions/terraform-plan@v1.34.2
+        with:
+          path: src
+          variables: |
+            subscription_id  = "${{ github.event.inputs.workload-subscription-id }}"
+            workload_name    = "${{ github.event.inputs.workload-name }}"
+            hub_resource_id = "${{ github.event.inputs.hub-resource-id }}"
+            firewall_private_ip_address = "${{ github.event.inputs.firewall-private-ip-address }}"
+          var_file: |
+            src/tfvars/production/deploy.prod.spoke.tfvars
+
+      - name: MPE Workload Spoke terraform apply
         uses: azurenoops/terraform-github-actions/terraform-apply@v1.34.2
         with:
-          path: src/workload_spoke
+          path: src/modules/workload_spoke
+          variables: |
+            subscription_id  = "${{ github.event.inputs.workload-subscription-id }}"
+            workload_name    = "${{ github.event.inputs.workload-name }}"
+            hub_resource_id = "${{ github.event.inputs.hub-resource-id }}"
+            firewall_private_ip_address = "${{ github.event.inputs.firewall-private-ip-address }}"
+          var_file: |
+            src/tfvars/production/deploy.prod.spoke.tfvars
