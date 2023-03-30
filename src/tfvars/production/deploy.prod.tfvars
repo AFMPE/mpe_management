@@ -53,7 +53,7 @@ enable_bastion_host = true
 
 ops_name = "ops-core"
 ops_vnet_address_space = ["10.0.115.0/24"]
-ops_vnet_subnet_address_prefixes = ["10.0.115.128/27"]
+ops_vnet_subnet_address_prefixes = ["10.0.115.0/27"]
 ops_vnet_subnet_service_endpoints = [
     "Microsoft.KeyVault",
     "Microsoft.Sql",
