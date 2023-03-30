@@ -56,14 +56,14 @@ variable "subscription_id_sharedservices" {
   description = "If specified, identifies the Platform subscription for \"Shared Services\" for resource deployment and correct placement in the Management Group hierarchy."
 }
 
-variable "subscription_id_partners_dev" {
+variable "subscription_id_partners_gsa_dev" {
   type        = string
-  description = "If specified, identifies the Partners subscription for \"Partners Dev\" for resource deployment and correct placement in the Management Group hierarchy."
+  description = "If specified, identifies the Partners GSA subscription for \"Partners Dev\" for resource deployment and correct placement in the Management Group hierarchy."
 }
 
-variable "subscription_id_partners_prod" {
+variable "subscription_id_partners_gsa_prod" {
   type        = string
-  description = "If specified, identifies the Partners subscription for \"Partners Prod\" for resource deployment and correct placement in the Management Group hierarchy."
+  description = "If specified, identifies the Partners GSA subscription for \"Partners Prod\" for resource deployment and correct placement in the Management Group hierarchy."
 }
 
 variable "subscription_id_internal" {

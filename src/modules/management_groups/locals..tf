@@ -12,13 +12,13 @@ locals {
 # The following locals are used to convert provided input
 # variables to locals before use elsewhere in the module
 locals {
-  root_id                  = var.root_management_group_id
-  root_name                = var.root_management_group_display_name
-  subscription_id_hub      = var.subscription_id_hub
-  subscription_id_sandbox  = var.subscription_id_sandbox
-  subscription_id_internal = var.subscription_id_internal
-  subscription_id_partners_dev = var.subscription_id_partners_dev
-  subscription_id_partners_prod = var.subscription_id_partners_prod
+  root_id                           = var.root_management_group_id
+  root_name                         = var.root_management_group_display_name
+  subscription_id_hub               = var.subscription_id_hub
+  subscription_id_sandbox           = var.subscription_id_sandbox
+  subscription_id_internal          = var.subscription_id_internal
+  subscription_id_partners_gsa_dev  = var.subscription_id_partners_gsa_dev
+  subscription_id_partners_gsa_prod = var.subscription_id_partners_gsa_prod
 }
 
 
@@ -59,7 +59,7 @@ locals {
       display_name               = "partners"
       management_group_name      = "partners"
       parent_management_group_id = "workloads"
-      subscription_ids           = ["${local.subscription_id_partners_dev}", "${local.subscription_id_partners_prod}"]
+      subscription_ids           = ["${local.subscription_id_partners_gsa_dev}", "${local.subscription_id_partners_gsa_prod}"]
     }
   }
 }
@@ -70,7 +70,7 @@ locals {
   provider_path = {
     management_groups = "/providers/Microsoft.Management/managementGroups/"
     role_assignment   = "/providers/Microsoft.Authorization/roleAssignments/"
-  }  
+  }
 }
 
 # The following locals are used to control time_sleep
