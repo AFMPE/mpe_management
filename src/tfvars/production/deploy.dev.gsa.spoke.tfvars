@@ -4,7 +4,7 @@
 # 
 required = {
   org_name           = "ampe"
-  deploy_environment = "prod" # dev | test | prod
+  deploy_environment = "dev" # dev | test | prod
   environment        = "public" # public | usgovernement
   metadata_host      = "management.azure.com" # management.azure.com | management.usgovcloudapi.net | management.chinacloudapi.cn | management.microsoftazure.de
 }
