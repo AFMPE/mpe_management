@@ -1,5 +1,8 @@
-root_management_group_id ="ampe" # the root management group id for this subscription
-root_management_group_display_name ="ampe" # the root management group display name for this subscription
+# This is a sample configuration file for the MPE Landing Zone
+
+# This file is used to configure the MPE Landing Zone.  It is used to set the default values for the variables used in the MPE Landing Zone.  The values in this file can be overridden by setting the same variable in the terraform.tfvars file.
+
+# Subscription Configuration
 
 #
 required = {
