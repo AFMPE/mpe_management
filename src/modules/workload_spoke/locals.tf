@@ -1,3 +1,26 @@
+# Copyright (c) Microsoft Corporation.
+# Licensed under the MIT License.
+
+# The following block of locals are used to avoid using
+# empty object types in the code
+locals {
+  empty_list   = []
+  empty_map    = tomap({})
+  empty_string = ""
+}
+
+# The following locals are used to convert provided input
+# variables to locals before use elsewhere in the module
+locals {
+  subscription_id          = var.subscription_id
+  org_name                 = var.required.org_name
+  deploy_environment       = var.required.deploy_environment
+  environment              = var.required.environment
+  metadata_host            = var.required.metadata_host
+  enable_resource_locks    = var.enable_resource_locks
+  default_location         = var.location
+  default_tags             = var.default_tags
+}
 
 # The following locals are used to landing Zone - Partner Environment - Spokes
 locals {

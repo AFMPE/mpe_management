@@ -1,12 +1,15 @@
+# Copyright (c) Microsoft Corporation.
+# Licensed under the MIT License.
+
 root_management_group_id ="ampe" # the root management group id for this subscription
 root_management_group_display_name ="ampe" # the root management group display name for this subscription
 
 #
 required = {
   org_name           = "ampe"
-  deploy_environment = "prod"
-  environment        = "public"
-  metadata_host      = "management.azure.com"
+  deploy_environment = "prod" # dev | test | prod
+  environment        = "public" # public | usgovernement
+  metadata_host      = "management.azure.com" # management.azure.com | management.usgovcloudapi.net | management.chinacloudapi.cn | management.microsoftazure.de
 }
 
 default_location      = "eastus"
@@ -53,7 +56,7 @@ enable_bastion_host = true
 
 ops_name = "ops-core"
 ops_vnet_address_space = ["10.0.115.0/24"]
-ops_vnet_subnet_address_prefixes = ["10.0.115.128/27"]
+ops_vnet_subnet_address_prefixes = ["10.0.115.0/27"]
 ops_vnet_subnet_service_endpoints = [
     "Microsoft.KeyVault",
     "Microsoft.Sql",

@@ -19,3 +19,10 @@ terraform {
 
   required_version = ">= 1.3.1"
 }
+
+provider "azurerm" {
+  subscription_id = var.subscription_id
+  metadata_host = local.metadata_host
+
+  features {}
+}
