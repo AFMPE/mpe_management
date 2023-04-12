@@ -19,15 +19,6 @@ AUTHOR/S: jspinella
 
 terraform {
   # It is recommended to use remote state instead of local
-  # This is only used for testing, and should be commented out for production
-  /*  backend "azurerm" {
-    resource_group_name  = "afmpe-network-artifacts-rg"
-    storage_account_name = "afmpetfmgth8dc4qua"
-    container_name       = "core-mgt-tfstate"
-    key                  = "test.terraform.tfstate"
-  }*/
-
- # Uncomment the following lines to use remote state for production
   backend "azurerm" {
     resource_group_name  = "afmpe-network-artifacts-rg"
     storage_account_name = "afmpetfmgtprodh8dc4qua"

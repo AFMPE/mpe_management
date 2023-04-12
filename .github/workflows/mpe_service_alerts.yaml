@@ -25,3 +25,5 @@ jobs:
         uses: azurenoops/terraform-github-actions/terraform-apply@v1.34.2
         with:
           path: src/modules/service_alerts
+          var_file: |
+            src/modules/service_alerts/parameters.prod.tfvars

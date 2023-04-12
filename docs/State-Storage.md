@@ -118,9 +118,9 @@ Sample:
 
 ```bash
 
-##################################################
-## 01 Remote Storage State configuration
-##################################################
+#########################################
+## Remote Storage State configuration  ##
+#########################################
 
 # Deployment state storage information
     state_sa_name  = "xxxx-enter-the-storage-account-name-xxxx"

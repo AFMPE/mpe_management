@@ -5,8 +5,6 @@
 SUMMARY: Module to deploy an Azure Partner Environment
 DESCRIPTION: The following components will be options in this deployment
              * Management Group Hierarchy
-             * Custom Role Definitions
-             * Hub/Spoke Network Architecture
 AUTHOR/S: jspinella
 */
 
