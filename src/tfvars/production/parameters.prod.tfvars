@@ -90,7 +90,8 @@ log_analytics_logs_retention_in_days = 30
 
 svcs_name                         = "svcs-core"
 svcs_vnet_address_space           = ["10.0.120.0/24"]
-svcs_vnet_subnet_address_prefixes = ["10.0.120.128/27"]
+svcs_vnet_subnet_address_prefixes = ["10.0.120.0/27"]
+svcs_pe_subnet_address_prefixes   = ["10.0.120.32/27"]
 svcs_vnet_subnet_service_endpoints = [
   "Microsoft.KeyVault",
   "Microsoft.Sql",
