@@ -1,16 +1,18 @@
-name: Create MPE Management terraform plan
+name: Destroy MPE Managment plan [USE WITH CAUTION]
 
 on:
-  - pull_request
+  push:
+    branches:
+      - main
 
 permissions:
   contents: read
   pull-requests: write
 
 jobs:
-  plan:
+  plan:    
     runs-on: ubuntu-latest
-    name: Create a plan for an MPE Management terraform configuration
+    name: Destroy terraform configuration plan for an MPE Management terraform configuration
     env:
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       ARM_CLIENT_ID: ${{ secrets.AZURE_AD_CLIENT_ID }}
@@ -21,8 +23,8 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
 
-      - name: terraform plan
-        uses: azurenoops/terraform-github-actions/terraform-plan@v1.34.2
+      - name: terraform destroy
+        uses: azurenoops/terraform-github-actions/terraform-destroy@v1.34.2
         with:
           path: src
           variables: |
@@ -37,6 +39,3 @@ jobs:
             storage_account_name=${{ secrets.AZURE_STORAGE_ACCOUNT_NAME }}
             container_name=${{ secrets.AZURE_STORAGE_CONTAINER_NAME }}            
             resource_group_name=${{ secrets.TFSTATE_RG }}
-          
-
-  

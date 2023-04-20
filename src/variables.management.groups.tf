@@ -9,10 +9,16 @@
 #################################
 # Global Configuration
 #################################
+
+variable "enable_management_groups" {
+  description = "Enable Management Groups"
+  type        = bool
+  default     = false
+}
+
 variable "root_management_group_id" {
   type        = string
   description = "If specified, will set a custom Name (ID) value for the \"root\" Management Group, and append this to the ID for all core Management Groups."
-  default     = "ampe"
 
   validation {
     condition     = can(regex("^[a-zA-Z0-9-]{2,10}$", var.root_management_group_id))
@@ -23,7 +29,6 @@ variable "root_management_group_id" {
 variable "root_management_group_display_name" {
   type        = string
   description = "If specified, will set a custom Display Name value for the \"root\" Management Group."
-  default     = "ampe"
 
   validation {
     condition     = can(regex("^[A-Za-z][A-Za-z0-9- ._]{1,22}[A-Za-z0-9]?$", var.root_management_group_display_name))
@@ -31,18 +36,9 @@ variable "root_management_group_display_name" {
   }
 }
 
-####################################
-# Management Group Configuration  ##
-####################################
-
-variable "management_groups" {
-  type = any
-  description = "A list of Management Groups to create."
-}
-
-##########################
-# Policy Configuration  ##
-##########################
+###########################
+# Duration Configuration ##
+###########################
 
 variable "create_duration_delay" {
   type = object({
@@ -80,4 +76,26 @@ variable "destroy_duration_delay" {
     condition     = can([for v in values(var.destroy_duration_delay) : regex("^[0-9]{1,6}(s|m|h)$", v)])
     error_message = "The destroy_duration_delay values must be a string containing the duration in numbers (1-6 digits) followed by the measure of time represented by s (seconds), m (minutes), or h (hours)."
   }
+}
+
+##########################
+# Budget Configuration  ##
+##########################
+
+variable "enable_management_groups_budgets" {
+  type        = bool
+  description = "Enable the management groups budgets module."
+  default     = false
+}
+
+variable "budget_contact_emails" {
+  type        = list(string)
+  description = "The list of email addresses to be used for contact information for the policy assignments."
+  default     = null
+}
+
+variable "budget_scope" {
+  type        = string
+  description = "The scope of the budget. This can be either a subscription, a resource group, or a management group."
+  default     = null
 }

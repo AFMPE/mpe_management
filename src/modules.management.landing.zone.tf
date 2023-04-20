@@ -4,35 +4,9 @@
 /*
 SUMMARY: Module to deploy an Azure Partner Environment
 DESCRIPTION: The following components will be options in this deployment
-             * Management Group Hierarchy
-             * Custom Role Definitions
              * Hub/Spoke Network Architecture
 AUTHOR/S: jspinella
 */
-
-########################################
-###  Management Group Configuations  ###
-########################################
-
-module "management_groups" {
-  source = "./modules/management_groups"
-
-  # Global Configuration
-  root_management_group_id           = var.root_management_group_id
-  root_management_group_display_name = var.root_management_group_display_name
-  subscription_id_hub                = var.subscription_id_hub
-  subscription_id_identity           = coalesce(var.subscription_id_identity, var.subscription_id_hub)
-  subscription_id_operations         = coalesce(var.subscription_id_operations, var.subscription_id_hub)
-  subscription_id_sharedservices     = coalesce(var.subscription_id_sharedservices, var.subscription_id_hub)
-  subscription_id_internal           = var.subscription_id_internal
-  subscription_id_sandbox            = var.subscription_id_sandbox
-  subscription_id_partners_gsa_dev   = var.subscription_id_partners_gsa_dev
-  subscription_id_partners_gsa_prod  = var.subscription_id_partners_gsa_prod
-}
-
-#############################################
-### Custom Role Definitions Configuations ###
-#############################################
 
 ################################
 ### Hub/Spoke Configuations  ###
@@ -48,6 +22,9 @@ module "landing_zone" {
   subscription_id_operations     = coalesce(var.subscription_id_operations, var.subscription_id_hub)
   subscription_id_identity       = coalesce(var.subscription_id_identity, var.subscription_id_hub)
   subscription_id_sharedservices = coalesce(var.subscription_id_sharedservices, var.subscription_id_hub)
+  state_sa_rg                    = local.state_sa_rg
+  state_sa_name                  = local.state_sa_name
+  state_sa_container_name        = local.state_sa_container_name
 
   # Resource Lock Configuration
   enable_resource_locks = var.enable_resource_locks
@@ -82,3 +59,5 @@ module "landing_zone" {
   svcs_vnet_subnet_service_endpoints = var.svcs_vnet_subnet_service_endpoints
 
 }
+
+

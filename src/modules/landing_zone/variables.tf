@@ -69,6 +69,27 @@ variable "subscription_id_sharedservices" {
 }
 
 #################################
+# Remote State Configuration
+#################################
+
+## This is required for retrieving state
+variable "state_sa_name" {
+  type        = string
+  description = "The name of the storage account to use for storing the Terraform state."
+}
+
+variable "state_sa_container_name" {
+  type        = string
+  description = "The name of the container to use for storing the Terraform state."
+}
+
+# Storage Account Resource Group
+variable "state_sa_rg" {
+  type        = string
+  description = "The name of the resource group in which the storage account is located."
+}
+
+#################################
 # Resource Lock Configuration
 #################################
 
@@ -224,6 +245,12 @@ variable "svcs_vnet_subnet_address_prefixes" {
   description = "The address prefixes of the svcs virtual network subnets."
   type        = list(string)
   default     = ["10.0.120.0/27"]
+}
+
+variable "svcs_pe_subnet_address_prefixes" {
+  description = "The address prefixes of the svcs virtual network private endpoint subnets."
+  type        = list(string)
+  default     = ["10.0.120.32/27"]
 }
 
 variable "svcs_vnet_subnet_service_endpoints" {

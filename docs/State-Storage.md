@@ -1,4 +1,6 @@
-# How to Create a Remote Backend for Terraform
+# Use the Azure CLI to create a storage account to store the Terraform state files for MPE
+
+This storage account will be used to store the state of each deployment step and will be accessed by Terraform to reference values stored in the various deployment state files.
 
 ## Overview
 
@@ -57,13 +59,13 @@ az storage container create --name <container-name> --account-name <storage-acco
 
 or
 
-You can use the bash script "az-remote-backend.sh" to create the storage account and the container.
+You can use the bash script ["az-remote-backend.sh"](../src/modules/network_artifacts/remote-backend/az-remote-backend.sh) to create the storage account and the container.
 
 ## Configuring the Remote Backend to use Azure Storage with Terraform
 
 We can also use Terraform to create the storage account in Azure Storage.
 
-We will start using a files called az-remote-backend-*.tf to create the storage account and the container.
+We will start using a files called az-remote-backend-*.tf located in [remote-backend](../src/modules/network_artifacts/remote-backend) to create the storage account and the container.
 
 ## Authenticating to Azure using a Service Principal (SPN) to use State Files in Remote Backend
 
@@ -107,3 +109,27 @@ Then, we launch the stack as usual:
 ```hcl
 terraform apply -auto-approve
 ```
+
+## Configure Variables for state management
+
+Modify the variables within the "01 Remote Storage State configuration" section of the variable definitons file [parameters.tfvars](./parameters.tfvars).
+
+Sample: 
+
+```bash
+
+#########################################
+## Remote Storage State configuration  ##
+#########################################
+
+# Deployment state storage information
+    state_sa_name  = "xxxx-enter-the-storage-account-name-xxxx"
+    state_sa_rg    = "xxxx-enter-the-resource-group-here-xxxx"
+    state_sa_container_name = "ampestatesa"
+
+
+```
+
+### Next step
+
+:arrow_forward: [Deploy the Hub Virtual Network](./Management-Groups.md)
