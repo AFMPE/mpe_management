@@ -27,8 +27,8 @@ module "mod_mpe_mg_budgets" {
   budget_category   = "Cost"
   budget_scope      = var.budget_scope
   budget_time_period = {
-    start_date = "2023-03-01T00:00:00Z"
-    end_date   = "2024-04-01T00:00:00Z"
+    start_date = "2023-04-01T00:00:00Z"
+    end_date   = "2024-05-01T00:00:00Z"
   }
   budget_notification = [
     {

@@ -1,9 +1,7 @@
 name: Destroy MPE Managment plan [USE WITH CAUTION]
 
 on:
-  push:
-    branches:
-      - main
+  workflow_dispatch:
 
 permissions:
   contents: read
