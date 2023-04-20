@@ -11,3 +11,9 @@ AUTHOR/S: jspinella
 #############################
 ###  Roles Configuations  ###
 #############################
+
+# Roles Hierarchy
+/* module "mod_mpr_roles" {
+  source = "./modules/roles" 
+
+} */
