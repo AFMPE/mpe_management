@@ -76,6 +76,15 @@ variable "subscription_id_sandbox" {
   description = "If specified, identifies the Sandbox subscription for \"Sandbox\" for resource deployment and correct placement in the Management Group hierarchy."
 }
 
+####################################
+# Management Group Configuration  ##
+####################################
+
+variable "management_groups" {
+  type = any
+  description = "A list of Management Groups to create."
+}
+
 ##########################
 # Policy Configuration  ##
 ##########################

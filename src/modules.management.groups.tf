@@ -19,6 +19,7 @@ module "management_groups" {
   # Global Configuration
   root_management_group_id           = var.root_management_group_id
   root_management_group_display_name = var.root_management_group_display_name
+  management_groups                  = var.management_groups
   subscription_id_hub                = var.subscription_id_hub
   subscription_id_identity           = coalesce(var.subscription_id_identity, var.subscription_id_hub)
   subscription_id_operations         = coalesce(var.subscription_id_operations, var.subscription_id_hub)

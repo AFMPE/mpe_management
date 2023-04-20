@@ -5,6 +5,7 @@
 # Management Groups Configuration  ##
 #####################################
 
+enable_management_groups           = true   # enable management groups for this subscription
 root_management_group_id           = "ampe" # the root management group id for this subscription
 root_management_group_display_name = "ampe" # the root management group display name for this subscription
 

@@ -9,6 +9,7 @@
 # Management Groups Configuration  ##
 #####################################
 
+enable_management_groups           = false  # enable management groups for this tenant
 root_management_group_id           = "ampe" # the root management group id for this subscription
 root_management_group_display_name = "ampe" # the root management group display name for this subscription
 
