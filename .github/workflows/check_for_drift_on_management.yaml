@@ -30,6 +30,11 @@ jobs:
             subscription_id_partners_gsa_prod = "${{ secrets.AZURE_PARTNER_GSA_PROD_SUBSCRIPTION_ID }}"
           var_file: |
             src/tfvars/production/parameters.prod.tfvars
+          backend_config: |
+            storage_account_name = "${{ secrets.AZURE_STORAGE_ACCOUNT_NAME }}"
+            container_name       = "${{ secrets.AZURE_STORAGE_CONTAINER_NAME }}"
+            key                  = "ampe"
+            resource_group_name  = "${{ secrets.TFSTATE_RG }}"
 
       - name: Changes detected
         if: ${{ failure() && steps.check.outputs.failure-reason == 'changes-to-apply' }}
