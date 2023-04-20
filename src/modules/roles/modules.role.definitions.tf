@@ -42,7 +42,7 @@ resource "azurerm_role_definition" "platform_operations" {
   ]
   name        = "Custom - Platform Operations (AppOps)"
   scope       = data.azurerm_subscription.current.id
-  description = "Role granted for application/operations team at resource group level"
+  description = "Contributor role granted for application/operations team at resource group level"
   permissions {
     actions = [
       "*"
@@ -52,11 +52,7 @@ resource "azurerm_role_definition" "platform_operations" {
       "Microsoft.Authorization/*/write",
       "Microsoft.Network/publicIPAddresses/write",
       "Microsoft.Network/virtualNetworks/write",
-      "Microsoft.Network/virtualNetworks/*/write",
-      "Microsoft.Network/virtualNetworks/*/delete",
-      "Microsoft.Network/virtualNetworks/peer/action",
-      "Microsoft.KeyVault/locations/deletedVaults/purge/action",
-      "Microsoft.Resources/deployments/write",    
+      "Microsoft.KeyVault/locations/deletedVaults/purge/action"
     ]
     not_data_actions = []
   }

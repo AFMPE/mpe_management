@@ -31,13 +31,49 @@ variable "root_management_group_display_name" {
   }
 }
 
-####################################
-# Management Group Configuration  ##
-####################################
+variable "subscription_id_hub" {
+  type        = string
+  description = "If specified, identifies the Platform subscription for \"Hub\" for resource deployment and correct placement in the Management Group hierarchy."
 
-variable "management_groups" {
-  type = any
-  description = "A list of Management Groups to create."
+  validation {
+    condition     = can(regex("^[a-z0-9-]{36}$", var.subscription_id_hub)) || var.subscription_id_hub == ""
+    error_message = "Value must be a valid Subscription ID (GUID)."
+  }
+}
+
+variable "subscription_id_identity" {
+  type        = string
+  description = "If specified, identifies the Platform subscription for \"Identity\" for resource deployment and correct placement in the Management Group hierarchy."
+}
+
+variable "subscription_id_operations" {
+  type        = string
+  description = "If specified, identifies the Platform subscription for \"Operations\" for resource deployment and correct placement in the Management Group hierarchy."
+}
+
+variable "subscription_id_sharedservices" {
+  type        = string
+  description = "If specified, identifies the Platform subscription for \"Shared Services\" for resource deployment and correct placement in the Management Group hierarchy."
+}
+
+variable "subscription_id_partners_gsa_dev" {
+  type        = string
+  description = "If specified, identifies the Partners GSA subscription for \"Partners Dev\" for resource deployment and correct placement in the Management Group hierarchy."
+}
+
+variable "subscription_id_partners_gsa_prod" {
+  type        = string
+  description = "If specified, identifies the Partners GSA subscription for \"Partners Prod\" for resource deployment and correct placement in the Management Group hierarchy."
+}
+
+variable "subscription_id_internal" {
+  type        = string
+  description = "If specified, identifies the Imternal subscription for \"Internal\" for resource deployment and correct placement in the Management Group hierarchy."
+}
+
+variable "subscription_id_sandbox" {
+  type        = string
+  description = "If specified, identifies the Sandbox subscription for \"Sandbox\" for resource deployment and correct placement in the Management Group hierarchy."
 }
 
 ##########################
@@ -81,3 +117,14 @@ variable "destroy_duration_delay" {
     error_message = "The destroy_duration_delay values must be a string containing the duration in numbers (1-6 digits) followed by the measure of time represented by s (seconds), m (minutes), or h (hours)."
   }
 }
+
+##########################
+# Budget Configuration  ##
+##########################
+
+variable "contact_emails" {
+  type        = list(string)
+  description = "The list of email addresses to be used for contact information for the policy assignments."
+  default     = ["mpe@microsoft.com"]
+}
+

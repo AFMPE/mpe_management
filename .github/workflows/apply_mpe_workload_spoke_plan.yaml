@@ -54,7 +54,7 @@ jobs:
             hub_virtual_network_id = "${{ github.event.inputs.hub_resource_id }}"
             firewall_private_ip = "${{ github.event.inputs.firewall_private_ipaddress }}"
           var_file: |
-            src/tfvars/production/parameters.dev.gsa.spoke.tfvars
+            src/tfvars/production/deploy.dev.gsa.spoke.tfvars
 
       - name: MPE Workload Spoke terraform apply
         uses: azurenoops/terraform-github-actions/terraform-apply@v1.34.2
@@ -66,4 +66,4 @@ jobs:
             hub_virtual_network_id = "${{ github.event.inputs.hub_resource_id }}"
             firewall_private_ip = "${{ github.event.inputs.firewall_private_ipaddress }}"
           var_file: |
-            src/tfvars/production/parameters.dev.gsa.spoke.tfvars
+            src/tfvars/production/deploy.dev.gsa.spoke.tfvars

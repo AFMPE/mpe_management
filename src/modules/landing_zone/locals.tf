@@ -12,16 +12,16 @@ locals {
 # The following locals are used to convert provided input
 # variables to locals before use elsewhere in the module
 locals {
-  subscription_id_hub      = var.subscription_id_hub
-  org_name                 = var.required.org_name
-  deploy_environment       = var.required.deploy_environment
-  environment              = var.required.environment
-  metadata_host            = var.required.metadata_host
-  enable_resource_locks    = var.enable_resource_locks
-  default_location         = var.location
-  default_tags             = var.default_tags
-  disable_base_module_tags = var.disable_base_module_tags
-  disable_telemetry        = var.disable_telemetry
+  subscription_id_hub            = var.subscription_id_hub
+  org_name                       = var.required.org_name
+  deploy_environment             = var.required.deploy_environment
+  environment                    = var.required.environment
+  metadata_host                  = var.required.metadata_host
+  enable_resource_locks          = var.enable_resource_locks
+  default_location               = var.location
+  default_tags                   = var.default_tags
+  disable_base_module_tags       = var.disable_base_module_tags
+  disable_telemetry              = var.disable_telemetry
 }
 
 # The following locals are used to define RegEx
@@ -185,18 +185,10 @@ locals {
   ]
 
   # The following locals are used to define the shared services resources
-  svcs_name               = var.svcs_name
-  svcs_vnet_address_space = var.svcs_vnet_address_space
-  svcs_subnet_addresses   = var.svcs_vnet_subnet_address_prefixes
-  svcs_vnet_subnets = {
-    pe-snet = {
-      name                                       = "pe"
-      address_prefixes                           = var.svcs_pe_subnet_address_prefixes
-      service_endpoints                          = var.svcs_vnet_subnet_service_endpoints
-      private_endpoint_network_policies_enabled  = false
-      private_endpoint_service_endpoints_enabled = true
-    }
-  }
+  svcs_name                     = var.svcs_name
+  svcs_vnet_address_space       = var.svcs_vnet_address_space
+  svcs_subnet_addresses         = var.svcs_vnet_subnet_address_prefixes
+  svcs_vnet_subnets             = {}
   svcs_subnet_service_endpoints = var.svcs_vnet_subnet_service_endpoints
   svcs_nsg_rules = [
     {

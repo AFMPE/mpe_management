@@ -23,12 +23,12 @@ terraform {
     azurerm = {
       source  = "hashicorp/azurerm"
       version = "~> 3.36"
-    }
+    }   
     azurenoopsutils = {
       source  = "azurenoops/azurenoopsutils"
       version = "~> 1.0.4"
     }
-  }  
+  }
 }
 
 provider "azurerm" {
