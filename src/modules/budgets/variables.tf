@@ -9,31 +9,15 @@
 ##########################
 # Budget Configuration  ##
 ##########################
-
+  
 variable "contact_emails" {
   type        = list(string)
   description = "The list of email addresses to be used for contact information for the policy assignments."
-  default     = ["mpe@microsoft.com"]
 }
 
-#################################
-# Remote State Configuration
-#################################
-
-## This is required for retrieving state
-variable "state_sa_name" {
+variable "budget_scope" {
   type        = string
-  description = "The name of the storage account to use for storing the Terraform state."
+  description = "The scope of the budget. This can be either a subscription, a resource group, or a management group." 
 }
 
-variable "state_sa_container_name" {
-  type        = string
-  description = "The name of the container to use for storing the Terraform state."
-}
-
-# Storage Account Resource Group
-variable "state_sa_rg" {
-  type        = string
-  description = "The name of the resource group in which the storage account is located."
-}
 

@@ -9,6 +9,10 @@ enable_management_groups           = true   # enable management groups for this 
 root_management_group_id           = "ampe" # the root management group id for this subscription
 root_management_group_display_name = "ampe" # the root management group display name for this subscription
 
+# Budgets for management groups
+enable_management_groups_budgets = true
+budget_contact_emails = ["ampe@missionpartners.us"] # email addresses to send alerts to for this subscription
+
 ###########################
 ## Global Configuration  ##
 ###########################

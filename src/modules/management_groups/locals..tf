@@ -13,12 +13,7 @@ locals {
 # variables to locals before use elsewhere in the module
 locals {
   root_id                           = var.root_management_group_id
-  root_name                         = var.root_management_group_display_name
-  subscription_id_hub               = var.subscription_id_hub
-  subscription_id_sandbox           = var.subscription_id_sandbox
-  subscription_id_internal          = var.subscription_id_internal
-  subscription_id_partners_gsa_dev  = var.subscription_id_partners_gsa_dev
-  subscription_id_partners_gsa_prod = var.subscription_id_partners_gsa_prod
+  root_name                         = var.root_management_group_display_name  
   management_groups                 = var.management_groups
 }
 

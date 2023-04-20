@@ -41,7 +41,7 @@ variable "disable_base_module_tags" {
 variable "subscription_id_hub" {
   type        = string
   description = "If specified, identifies the Platform subscription for \"Hub\" for resource deployment and correct placement in the Management Group hierarchy."
-
+  sensitive = true
   validation {
     condition     = can(regex("^[a-z0-9-]{36}$", var.subscription_id_hub)) || var.subscription_id_hub == ""
     error_message = "Value must be a valid Subscription ID (GUID)."
@@ -52,38 +52,45 @@ variable "subscription_id_identity" {
   type        = string
   description = "If specified, identifies the Platform subscription for \"Identity\" for resource deployment and correct placement in the Management Group hierarchy."
   default     = null
+  sensitive = true
 }
 
 variable "subscription_id_operations" {
   type        = string
   description = "If specified, identifies the Platform subscription for \"Operations\" for resource deployment and correct placement in the Management Group hierarchy."
   default     = null
+  sensitive = true
 }
 
 variable "subscription_id_sharedservices" {
   type        = string
   description = "If specified, identifies the Platform subscription for \"Shared Services\" for resource deployment and correct placement in the Management Group hierarchy."
   default     = null
+  sensitive = true
 }
 
 variable "subscription_id_partners_gsa_dev" {
   type        = string
   description = "If specified, identifies the Partners GSA subscription for \"Partners Dev\" for resource deployment and correct placement in the Management Group hierarchy."
+  sensitive = true
 }
 
 variable "subscription_id_partners_gsa_prod" {
   type        = string
   description = "If specified, identifies the Partners GSA subscription for \"Partners Prod\" for resource deployment and correct placement in the Management Group hierarchy."
+  sensitive = true
 }
 
 variable "subscription_id_internal" {
   type        = string
   description = "If specified, identifies the Imternal subscription for \"Internal\" for resource deployment and correct placement in the Management Group hierarchy."
+  sensitive = true
 }
 
 variable "subscription_id_sandbox" {
   type        = string
   description = "If specified, identifies the Sandbox subscription for \"Sandbox\" for resource deployment and correct placement in the Management Group hierarchy."
+  sensitive = true
 }
 
 #################################
