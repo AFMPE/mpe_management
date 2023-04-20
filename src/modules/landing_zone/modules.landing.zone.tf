@@ -27,8 +27,8 @@ AUTHOR/S: jspinella
 ### Operational Logging Configuration   ###
 ###########################################
 
-module "mod_operational_logging" {  
-  providers = {azurerm = azurerm.operations}
+module "mod_operational_logging" {
+  providers = { azurerm = azurerm.operations }
   source    = "azurenoops/overlays-hubspoke/azurerm//modules/operational-logging"
   version   = "~> 1.0.7"
 
@@ -92,10 +92,10 @@ module "mod_operational_logging" {
 ### Hub Network Configuration       ###
 #######################################
 
-module "mod_hub_network" {  
-  providers = {azurerm = azurerm.hub}
-  source  = "azurenoops/overlays-hubspoke/azurerm//modules/virtual-network-hub"
-  version = "~> 1.0.7"
+module "mod_hub_network" {
+  providers = { azurerm = azurerm.hub }
+  source    = "azurenoops/overlays-hubspoke/azurerm//modules/virtual-network-hub"
+  version   = "~> 1.0.7"
 
   #####################################
   ## Global Settings Configuration  ###
@@ -201,11 +201,11 @@ module "mod_hub_network" {
 #############################
 
 // Resources for the Operations Spoke
-module "mod_ops_network" { 
+module "mod_ops_network" {
   depends_on = [
     module.mod_hub_network
-  ] 
-  providers = {azurerm = azurerm.operations}
+  ]
+  providers = { azurerm = azurerm.operations }
   source    = "azurenoops/overlays-hubspoke/azurerm//modules/virtual-network-spoke"
   version   = "~> 1.0.7"
 
@@ -264,10 +264,10 @@ module "mod_ops_network" {
 }
 
 // Resources for the Shared Services Spoke
-module "mod_svcs_network" {  
+module "mod_svcs_network" {
   depends_on = [
     module.mod_hub_network
-  ] 
+  ]
   providers = { azurerm = azurerm.sharedservices }
   source    = "azurenoops/overlays-hubspoke/azurerm//modules/virtual-network-spoke"
   version   = "~> 1.0.7"
@@ -297,6 +297,9 @@ module "mod_svcs_network" {
   spoke_subnet_service_endpoints                      = local.svcs_subnet_service_endpoints
   spoke_private_endpoint_network_policies_enabled     = false
   spoke_private_link_service_network_policies_enabled = true
+
+  # Add Private Endpoint Subnet
+  add_subnets = local.svcs_vnet_subnets
 
   # Hub Virtual Network ID
   hub_virtual_network_id = module.mod_hub_network.hub_virtual_network_id

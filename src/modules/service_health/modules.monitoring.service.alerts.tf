@@ -32,7 +32,7 @@ module "mod_service_health_monitoring" {
   activity_log_alerts = var.activity_log_alerts
 
   add_tags = {
-    purpose = "alerting testing"
+    purpose = "mpe alerting"
   }
 }
 

@@ -8,7 +8,7 @@ DESCRIPTION: The following components will be options in this deployment
 AUTHOR/S: jspinella
 */
 
-module "mod_sentinel_rule_alerts" {
+/* module "mod_sentinel_rule_alerts" {
   depends_on = [
     module.landing_zone
   ]
@@ -19,4 +19,4 @@ module "mod_sentinel_rule_alerts" {
   for_each = var.sentinel_rule_alerts
 
   
-}
+} */

@@ -22,6 +22,9 @@ module "landing_zone" {
   subscription_id_operations     = coalesce(var.subscription_id_operations, var.subscription_id_hub)
   subscription_id_identity       = coalesce(var.subscription_id_identity, var.subscription_id_hub)
   subscription_id_sharedservices = coalesce(var.subscription_id_sharedservices, var.subscription_id_hub)
+  state_sa_rg                    = local.state_sa_rg
+  state_sa_name                  = local.state_sa_name
+  state_sa_container_name        = local.state_sa_container_name
 
   # Resource Lock Configuration
   enable_resource_locks = var.enable_resource_locks
@@ -56,3 +59,5 @@ module "landing_zone" {
   svcs_vnet_subnet_service_endpoints = var.svcs_vnet_subnet_service_endpoints
 
 }
+
+

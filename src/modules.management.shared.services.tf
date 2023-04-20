@@ -14,7 +14,7 @@ AUTHOR/S: jspinella
 ### Hub/Spoke Configuations  ###
 ################################
 
-module "shared_services" {
+/* module "shared_services" {
   source = "./modules/shared_services"
 
   # Global Configuration
@@ -25,5 +25,8 @@ module "shared_services" {
   subscription_id_identity       = coalesce(var.subscription_id_identity, var.subscription_id_hub)
   subscription_id_sharedservices = coalesce(var.subscription_id_sharedservices, var.subscription_id_hub)
 
+  # Key Vault Configuration
 
-}
+
+  # Bastion VM Configuration
+} */

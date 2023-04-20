@@ -27,9 +27,9 @@ enable_resource_locks = false
 #########################################
 
 # Deployment state storage information
-state_sa_name           = "afmpetfmgtprodh8dc4qua"
+state_sa_name           = "afmpetfmgth8dc4qua"
 state_sa_rg             = "afmpe-network-artifacts-rg"
-state_sa_container_name = "core-mgt-test-tfstate"
+state_sa_container_name = "core-mgt-tfstate"
 
 ###############################
 # Workload Virtual Network  ###

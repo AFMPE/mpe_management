@@ -14,6 +14,7 @@ AUTHOR/S: jspinella
 
 module "management_groups" {
   source = "./modules/management_groups"
+  count  = var.enable_management_groups ? 1 : 0 # used in testing
 
   # Global Configuration
   root_management_group_id           = var.root_management_group_id
@@ -26,5 +27,6 @@ module "management_groups" {
   subscription_id_sandbox            = var.subscription_id_sandbox
   subscription_id_partners_gsa_dev   = var.subscription_id_partners_gsa_dev
   subscription_id_partners_gsa_prod  = var.subscription_id_partners_gsa_prod
+  contact_emails                     = var.contact_emails
 }
 
