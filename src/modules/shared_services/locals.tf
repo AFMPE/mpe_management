@@ -12,16 +12,25 @@ locals {
 # The following locals are used to convert provided input
 # variables to locals before use elsewhere in the module
 locals {
-  subscription_id_hub            = var.subscription_id_hub
-  org_name                       = var.required.org_name
-  deploy_environment             = var.required.deploy_environment
-  environment                    = var.required.environment
-  metadata_host                  = var.required.metadata_host
-  enable_resource_locks          = var.enable_resource_locks
-  default_location               = var.location
-  default_tags                   = var.default_tags
-  disable_base_module_tags       = var.disable_base_module_tags
-  disable_telemetry              = var.disable_telemetry
+  subscription_id_hub      = var.subscription_id_hub
+  org_name                 = var.required.org_name
+  deploy_environment       = var.required.deploy_environment
+  environment              = var.required.environment
+  metadata_host            = var.required.metadata_host
+  enable_resource_locks    = var.enable_resource_locks
+  default_location         = var.location
+  default_tags             = var.default_tags
+  disable_base_module_tags = var.disable_base_module_tags
+  disable_telemetry        = var.disable_telemetry
+}
+
+# The following locals are used to convert provided input
+# variables to locals before use elsewhere in the key vault module
+locals {
+  enabled_for_deployment          = var.enabled_for_deployment
+  enabled_for_disk_encryption     = var.enabled_for_disk_encryption
+  enabled_for_template_deployment = var.enabled_for_template_deployment
+  enable_private_endpoint         = true
 }
 
 # The following locals are used to define RegEx

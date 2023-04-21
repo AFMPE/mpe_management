@@ -14,19 +14,20 @@ AUTHOR/S: jspinella
 ### Hub/Spoke Configuations  ###
 ################################
 
-/* module "shared_services" {
+module "shared_services" {
   source = "./modules/shared_services"
 
   # Global Configuration
-  required                       = var.required
-  location                       = var.default_location
-  subscription_id_hub            = var.subscription_id_hub
-  subscription_id_operations     = coalesce(var.subscription_id_operations, var.subscription_id_hub)
-  subscription_id_identity       = coalesce(var.subscription_id_identity, var.subscription_id_hub)
-  subscription_id_sharedservices = coalesce(var.subscription_id_sharedservices, var.subscription_id_hub)
+  required                = var.required
+  location                = var.default_location
+  state_sa_rg             = local.state_sa_rg
+  state_sa_name           = local.state_sa_name
+  state_sa_container_name = local.state_sa_container_name
 
   # Key Vault Configuration
-
+  enabled_for_deployment          = local.enabled_for_deployment
+  enabled_for_disk_encryption     = local.enabled_for_disk_encryption
+  enabled_for_template_deployment = local.enabled_for_template_deployment
 
   # Bastion VM Configuration
-} */
+}

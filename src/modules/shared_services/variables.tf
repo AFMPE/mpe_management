@@ -1,6 +1,20 @@
 # Copyright (c) Microsoft Corporation.
 # Licensed under the MIT License.
 
+
+#################################
+# Global Configuration
+#################################
+
+variable "required" {
+  description = "A map of required variables for the deployment"
+}
+
+variable "location" {
+  type        = string
+  description = "If specified, will set the Azure region in which region bound resources will be deployed. Please see: https://azure.microsoft.com/en-gb/global-infrastructure/geographies/"
+}
+
 #################################
 # Remote State Configuration
 #################################
