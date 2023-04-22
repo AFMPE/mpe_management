@@ -9,7 +9,7 @@
 # Management Groups Configuration  ##
 #####################################
 
-enable_management_groups           = true   # enable management groups for this subscription
+enable_management_groups           = false   # enable management groups for this subscription
 root_management_group_id           = "ampe" # the root management group id for this subscription
 root_management_group_display_name = "ampe" # the root management group display name for this subscription
 
@@ -127,7 +127,7 @@ admin_group_name = "afmpe_admins"
 # Sentinel Configuration  ##
 ############################
 
-sentinel_rule_alerts = {
+/* sentinel_rule_alerts = {
   "malicious_web_request" = {
     name                 = "A potentially malicious web request was executed against a web server"
     display_name         = "A potentially malicious web request was executed against a web server"
@@ -210,3 +210,4 @@ sentinel_rule_alerts = {
     trigger_threshold = 0
   }
 }
+ */

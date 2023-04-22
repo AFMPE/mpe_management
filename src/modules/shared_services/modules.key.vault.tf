@@ -22,7 +22,7 @@ module "mod_shared_keyvault" {
   # provide a name for an existing resource group. If you wish 
   # to use an existing resource group, change the option 
   # to "create_key_vault_resource_group = false."   
-  existing_resource_group_name = data.terraform_remote_state.landing_zone.outputs.svcs_resource_group_name
+  existing_resource_group_name = data.terraform_remote_state.landing_zone.mod_svcs_network.outputs.svcs_resource_group_name
   location                     = local.default_location
   deploy_environment           = local.deploy_environment
   org_name                     = local.org_name
@@ -41,7 +41,7 @@ module "mod_shared_keyvault" {
   # Private endpoints doesn't work If not using `existing_subnet_id` to create key vault inside a specified VNet.
   enable_private_endpoint   = local.enable_private_endpoint
   existing_subnet_id        = data.azurerm_subnet.svcs_subnet.id
-  virtual_network_name      = data.terraform_remote_state.landing_zone.outputs.svcs_virtual_network_name
+  virtual_network_name      = data.terraform_remote_state.landing_zone.mod_svcs_network.outputs.svcs_virtual_network_name
   existing_private_dns_zone = azurerm_private_dns_zone.dns_zone.name
 
   # Current user should be here to be able to create keys and secrets
@@ -61,6 +61,6 @@ module "mod_shared_keyvault" {
 ###################################
 resource "azurerm_private_dns_zone" "dns_zone" {
   name                = local.environment == "public" ? "privatelink.vaultcore.azure.net" : "privatelink.vaultcore.usgovcloudapi.net"
-  resource_group_name = data.terraform_remote_state.landing_zone.outputs.hub_resource_group_name
+  resource_group_name = data.terraform_remote_state.landing_zone.mod_hub_network.outputs.hub_resource_group_name
   tags                = merge({ "Name" = format("%s", "Azure-Key-Vault-Private-DNS-Zone") }, local.hub_resources_tags, )
 }

@@ -14,7 +14,7 @@ AUTHOR/S: jspinella
 ### Hub/Spoke Configuations  ###
 ################################
 
-module "shared_services" {
+/* module "shared_services" {
   source = "./modules/shared_services"
 
   # Global Configuration
@@ -33,3 +33,4 @@ module "shared_services" {
 
   # Bastion VM Configuration
 }
+ */
