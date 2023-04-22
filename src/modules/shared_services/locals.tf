@@ -19,8 +19,7 @@ locals {
   metadata_host            = var.required.metadata_host
   enable_resource_locks    = var.enable_resource_locks
   default_location         = var.location
-  default_tags             = var.default_tags
-  disable_base_module_tags = var.disable_base_module_tags
+  default_tags             = var.default_tags  
   disable_telemetry        = var.disable_telemetry
 }
 
@@ -31,6 +30,12 @@ locals {
   enabled_for_disk_encryption     = var.enabled_for_disk_encryption
   enabled_for_template_deployment = var.enabled_for_template_deployment
   enable_private_endpoint         = true
+}
+
+# The following locals are used to convert provided input
+# variables to locals before use elsewhere in the bastion vm module
+locals {
+  enable_bastion_host = var.enable_bastion_host
 }
 
 # The following locals are used to define RegEx
@@ -58,16 +63,13 @@ locals {
   base_module_tags = {
     deployedBy = "AzureNoOpsTF"
   }
-  hub_resources_tags = merge(
-    local.disable_base_module_tags ? local.empty_map : local.base_module_tags,
+  hub_resources_tags = merge(local.base_module_tags,
     local.default_tags,
   )
-  operations_resources_tags = merge(
-    local.disable_base_module_tags ? local.empty_map : local.base_module_tags,
+  operations_resources_tags = merge(local.base_module_tags,
     local.default_tags,
   )
-  sharedservices_resources_tags = merge(
-    local.disable_base_module_tags ? local.empty_map : local.base_module_tags,
+  sharedservices_resources_tags = merge(local.base_module_tags,
     local.default_tags,
   )
 }

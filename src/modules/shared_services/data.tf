@@ -13,7 +13,7 @@ data "terraform_remote_state" "landing_zone" {
 }
 
 data "azurerm_subnet" "svcs_subnet" {
-  name                 = var.subnet_name
+  name                 = data.terraform_remote_state.landing_zone.outputs.svcs_default_subnet_name
   virtual_network_name = data.terraform_remote_state.landing_zone.outputs.svcs_virtual_network_name
   resource_group_name  = data.terraform_remote_state.landing_zone.outputs.svcs_resource_group_name
 }
