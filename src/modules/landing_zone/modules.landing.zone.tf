@@ -241,6 +241,9 @@ module "mod_ops_network" {
   # Firewall Private IP Address 
   hub_firewall_private_ip_address = module.mod_hub_network.firewall_private_ip
 
+  # (Optional) Enable forced tunneling for Route Table
+  enable_forced_tunneling_on_route_table = true
+
   # (Optional) Operations Network Security Group
   # This is default values, do not need this if keeping default values
   # NSG rules are not created by default for Azure NoOps Hub Subnet
@@ -306,6 +309,9 @@ module "mod_svcs_network" {
 
   # Firewall Private IP Address 
   hub_firewall_private_ip_address = module.mod_hub_network.firewall_private_ip
+
+  # (Optional) Enable forced tunneling for Route Table
+  enable_forced_tunneling_on_route_table = true
 
   # (Optional) Shared Services Network Security Group
   # This is default values, do not need this if keeping default values

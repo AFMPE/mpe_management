@@ -11,30 +11,7 @@ AUTHOR/S: jspinella
 ## Bastion Jumpbox Configuration  ###
 #####################################
 
-#############################
-### Naming Configuations  ###
-#############################
-data "azurenoopsutils_resource_name" "bastion_vm" {
-  name          = local.hub_name
-  resource_type = "azurerm_linux_virtual_machine"
-  prefixes      = [local.org_name, module.mod_azure_region_lookup.location_short]
-  suffixes      = [local.deploy_environment, "bas"]
-  use_slug      = true
-  clean_input   = true
-  separator     = "-"
-}
-
-data "azurenoopsutils_resource_name" "bastion_nic" {
-  name          = local.hub_name
-  resource_type = "azurerm_network_interface"
-  prefixes      = [local.org_name, module.mod_azure_region_lookup.location_short]
-  suffixes      = [local.deploy_environment, "bas"]
-  use_slug      = true
-  clean_input   = true
-  separator     = "-"
-}
-
-resource "azurerm_network_interface" "bastion_jumpbox_nic" {
+/* resource "azurerm_network_interface" "bastion_jumpbox_nic" {
   count               = local.enable_bastion_host ? 1 : 0
   name                = data.azurenoopsutils_resource_name.bastion_nic.result
   location            = module.mod_azure_region_lookup.location_cli
@@ -53,7 +30,7 @@ resource "azurerm_linux_virtual_machine" "bastion_jumpbox_vm" {
   resource_group_name             = data.terraform_remote_state.landing_zone.outputs.svcs_resource_group_name
   location                        = module.mod_azure_region_lookup.location_cli
   size                            = "Standard_F2"
-  admin_username                  = "adminuser"
+  admin_username                  = "mpeadminuser"
   disable_password_authentication = false
   admin_password                  = "P@ssw0rd1234"
   network_interface_ids = [
@@ -71,4 +48,4 @@ resource "azurerm_linux_virtual_machine" "bastion_jumpbox_vm" {
     sku       = "16.04-LTS"
     version   = "latest"
   }
-}
+} */
