@@ -62,6 +62,7 @@ module "mod_shared_keyvault" {
   add_tags = local.sharedservices_resources_tags
 }
 
+
 ###################################
 ## Key Vault DNS Configuration  ###
 ###################################
