@@ -12,7 +12,7 @@ AUTHOR/S: jspinella
 ###############################
 module "mod_shared_keyvault" {
   source  = "azurenoops/overlays-key-vault/azurerm"
-  version = "~> 1.0.1"
+  version = "~> 1.0.2"
 
   depends_on = [
     azurerm_private_dns_zone.dns_zone
@@ -27,7 +27,7 @@ module "mod_shared_keyvault" {
   deploy_environment           = local.deploy_environment
   org_name                     = local.org_name
   environment                  = local.environment
-  workload_name                = "prod-keys"
+  workload_name                = "keys"
 
   # This is to enable the features of the key vault
   enabled_for_deployment          = local.enabled_for_deployment
