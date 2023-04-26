@@ -27,7 +27,7 @@ module "mod_shared_keyvault" {
   deploy_environment           = local.deploy_environment
   org_name                     = local.org_name
   environment                  = local.environment
-  workload_name                = "shared-keys"
+  workload_name                = "prod-keys"
 
   # This is to enable the features of the key vault
   enabled_for_deployment          = local.enabled_for_deployment
