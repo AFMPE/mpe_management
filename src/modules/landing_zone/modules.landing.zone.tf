@@ -30,7 +30,7 @@ AUTHOR/S: jspinella
 module "mod_operational_logging" {
   providers = { azurerm = azurerm.operations }
   source    = "azurenoops/overlays-hubspoke/azurerm//modules/operational-logging"
-  version   = "~> 1.0.7"
+  version   = "1.0.7"
 
   #####################################
   ## Global Settings Configuration  ###
@@ -95,7 +95,7 @@ module "mod_operational_logging" {
 module "mod_hub_network" {
   providers = { azurerm = azurerm.hub }
   source    = "azurenoops/overlays-hubspoke/azurerm//modules/virtual-network-hub"
-  version   = "~> 1.0.7"
+  version   = "1.0.7"
 
   #####################################
   ## Global Settings Configuration  ###
@@ -207,7 +207,7 @@ module "mod_ops_network" {
   ]
   providers = { azurerm = azurerm.operations }
   source    = "azurenoops/overlays-hubspoke/azurerm//modules/virtual-network-spoke"
-  version   = "~> 1.0.7"
+  version   = "1.0.7"
 
   #####################################
   ## Global Settings Configuration  ###
@@ -273,7 +273,7 @@ module "mod_svcs_network" {
   ]
   providers = { azurerm = azurerm.sharedservices }
   source    = "azurenoops/overlays-hubspoke/azurerm//modules/virtual-network-spoke"
-  version   = "~> 1.0.7"
+  version   = "1.0.7"
 
   #####################################
   ## Global Settings Configuration  ###
