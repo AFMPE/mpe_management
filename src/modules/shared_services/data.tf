@@ -22,4 +22,6 @@ data "azuread_group" "admin_group" {
   display_name = var.admin_group_name
 }
 
-data "azuread_client_config" "current" {}
+data "azuread_application" "ampe-mgt-spn" {
+  display_name = "mpe_prod_mgt"
+}
