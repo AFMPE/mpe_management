@@ -20,4 +20,5 @@ data "azurerm_subnet" "svcs_subnet" {
 
 data "azuread_group" "admin_group" {
   display_name = var.admin_group_name
+  security_enabled = true
 }
