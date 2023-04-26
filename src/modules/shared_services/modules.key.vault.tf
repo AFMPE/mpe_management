@@ -70,3 +70,4 @@ resource "azurerm_private_dns_zone" "dns_zone" {
   resource_group_name = data.terraform_remote_state.landing_zone.outputs.svcs_resource_group_name
   tags                = merge({ "Name" = format("%s", "Azure-Key-Vault-Private-DNS-Zone") }, local.hub_resources_tags, )
 }
+
