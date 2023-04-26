@@ -24,6 +24,22 @@ output "hub_default_subnet_name" {
   value       = module.mod_hub_network.hub_default_subnet_name
 }
 
+# hub_network firewall module outputs
+output "firewall_id" {
+  description = "The ID of the Azure Firewall"
+  value       = module.mod_hub_network.firewall_id
+}
+
+output "firewall_public_ip" {
+  description = "the public ip of firewall."
+  value       = module.mod_hub_network.firewall_public_ip
+}
+
+output "firewall_private_ip" {
+  description = "The private ip of firewall."
+  value       = module.mod_hub_network.firewall_private_ip
+}
+
 # ops_network module outputs
 output "operations_resource_group_name" {
   description = "The name of the operations resource group"
