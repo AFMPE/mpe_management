@@ -8,10 +8,6 @@ DESCRIPTION: The following components will be options in this deployment
 AUTHOR/S: jspinella, Curtis Slone
 */
 
-data "azurerm_log_analytics_workspace" "current" {
-  name                = "ampe-eus-ops-logging-core-test-log"
-  resource_group_name = "ampe-eus-ops-logging-core-test-rg"
-}
 
 module "mod_sentinel_rule_alerts" {
   depends_on = [
@@ -19,6 +15,6 @@ module "mod_sentinel_rule_alerts" {
   ]
   source   = "./modules/sentinel"
   
-  log_analytics_ws_id = data.azurerm_log_analytics_workspace.current.id
+  log_analytics_ws_id = module.landing_zone.ops_logging_workspace_id
   # sentinel_rule_alerts = local.alert_rules
 } 
