@@ -114,6 +114,7 @@ enabled_for_template_deployment = true
 
 admin_group_name = "afmpe_admins"
 
+
 # Bastion VM
 
 ############################
