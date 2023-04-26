@@ -55,10 +55,6 @@ module "mod_shared_keyvault" {
     data.azuread_group.admin_group.id
   ]
 
-  reader_objects_ids = [
-    data.azuread_application.ampe-mgt-spn
-  ]
-
   # This is to enable resource locks for the key vault. 
   enable_resource_locks = local.enable_resource_locks
 
