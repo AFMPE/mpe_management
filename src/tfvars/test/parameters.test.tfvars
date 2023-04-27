@@ -35,7 +35,7 @@ default_location = "eastus"
 enable_resource_locks = false
 
 # Used during testing, comment when not testing
-subscription_id_hub = "000000000-0000-0000-0000-000000000000"
+subscription_id_hub = "00000-00000-0000000-000"
 
 ####################################
 ## Security Center Configuration  ##
