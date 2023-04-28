@@ -44,7 +44,6 @@ resource "azurerm_sentinel_alert_rule_scheduled" "sentinel_alert" {
             entity_matching_method = each.value.entity_matching_method
             group_by_entities = each.value.group_by_entities
             group_by_alert_details = each.value.group_by_alert_details
-            group_by_custom_details = each.value.group_by_custom_details
         }
     }
 

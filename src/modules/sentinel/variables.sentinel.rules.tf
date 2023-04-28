@@ -40,7 +40,6 @@ variable "sentinel_rule_alerts" {
     entity_matching_method  = string
     group_by_entities       = list(string)
     group_by_alert_details  = list(string)
-    group_by_custom_details = list(string)
 
     suppression_duration = string
     suppression_enabled  = bool
