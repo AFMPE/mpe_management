@@ -2,7 +2,7 @@
 locals {
   alert_rules = { 
     "AAD_No_Password_Expiry" = {
-    query_frequency      = "P1D"
+    query_frequency      = "P3D"
     query_period         = "P1D"
     severity             = "Low"
 
