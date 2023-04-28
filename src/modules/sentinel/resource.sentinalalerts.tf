@@ -9,7 +9,7 @@ AUTHOR/S: Curtis Slone
 
 resource "azurerm_sentinel_alert_rule_scheduled" "sentinel_alert" {
     
-    for_each = local.alert_rules
+    for_each = var.sentinel_rule_alerts
     name = each.key
     log_analytics_workspace_id = var.log_analytics_ws_id
     query_frequency = each.value.query_frequency
