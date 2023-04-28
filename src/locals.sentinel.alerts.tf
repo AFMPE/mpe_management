@@ -72,14 +72,13 @@ EOT
     enabled = true
     create_incident = true
 
-    grouping_configuration = {
-        enabled = false
+
+        grouping_enabled = false
         reopen_closed_incident = false
         lookback_duration = "P1D"
         entity_matching_method = "AllEntities"
         group_by_entities = []
         group_by_alert_details = "Severity"
-    }
 
     suppression_duration = "PT5H"
     suppression_enabled  = true
