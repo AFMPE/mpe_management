@@ -18,7 +18,7 @@ resource "azurerm_sentinel_alert_rule_scheduled" "sentinel_alert" {
     query = each.value.query
 
     # https://faultbucket.ca/2020/09/terraform-nested-for_each-example/
-    entity_mapping {
-      mappings = {}
+    dynamic "entity_mapping" {
+      
     }
 }

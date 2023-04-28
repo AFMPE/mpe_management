@@ -42,6 +42,7 @@ variable "sentinel_rule_alerts" {
     create_incident      = bool
     # Grouping Block in incident_configuration block
     grouping_configuration = map(object({
+      enabled = bool
       lookback_duration       = string
       reopen_closed_incidents = bool
       entity_matching_method  = string

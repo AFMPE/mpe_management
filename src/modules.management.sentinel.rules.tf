@@ -16,5 +16,5 @@ module "mod_sentinel_rule_alerts" {
   source   = "./modules/sentinel"
   
   log_analytics_ws_id = module.landing_zone.ops_logging_workspace_id
-  # sentinel_rule_alerts = local.alert_rules
+  sentinel_rule_alerts = local.alert_rules
 } 
