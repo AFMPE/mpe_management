@@ -80,7 +80,7 @@ EOT
     suppression_duration = "P1D"
     suppression_enabled  = true
     event_grouping = "SingleAlert"
-  }
+  } # End Alert
   
   } # End Alert Rules
 } # End locals
