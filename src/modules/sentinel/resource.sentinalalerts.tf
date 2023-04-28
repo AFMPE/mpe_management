@@ -50,5 +50,8 @@ resource "azurerm_sentinel_alert_rule_scheduled" "sentinel_alert" {
 
     suppression_duration = each.value.suppression_duration
     suppression_enabled = each.value.suppression_enabled
-    event_grouping = each.value.event_grouping
+
+    event_grouping {
+      aggregation_method = each.value.event_grouping
+    }
 }

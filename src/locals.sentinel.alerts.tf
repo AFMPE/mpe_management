@@ -80,7 +80,7 @@ EOT
     group_by_custom_details = [""]
     suppression_duration = "PT5H"
     suppression_enabled  = true
-    event_grouping = { "aggregationKind": "SingleAlert"}
+    event_grouping = "SingleAlert"
   }
   
   } # End Alert Rules
