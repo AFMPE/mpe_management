@@ -38,10 +38,6 @@ variable "sentinel_rule_alerts" {
       enabled = bool
       lookback_duration       = string
       reopen_closed_incidents = bool
-      entity_matching_method  = string
-      group_by_entities       = list(string)
-      group_by_alert_details  = list(string)
-      group_by_custom_details = list(string)
     }))
 
     suppression_duration = string
