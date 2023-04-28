@@ -5,6 +5,7 @@
 SUMMARY: Sentinel Data Connectors
 DESCRIPTION: This resource connects the Sentinel Data Connectors
 AUTHOR/S: Curtis Slone
+
 */
 
 resource "azurerm_sentinel_data_connector_azure_active_directory" "dataAAD" {
