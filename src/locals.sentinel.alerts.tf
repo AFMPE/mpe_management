@@ -2,7 +2,7 @@
 locals {
   alert_rules = { 
     "AAD_No_Password_Expiry" = {
-    query_frequency      = "P3D"
+    query_frequency      = "P1D"
     query_period         = "P1D"
     severity             = "Low"
 
@@ -77,7 +77,7 @@ EOT
     entity_matching_method = "AllEntities"
     group_by_entities = []
     group_by_alert_details = ["Severity"]
-    suppression_duration = "PT5H"
+    suppression_duration = "PT2H"
     suppression_enabled  = true
     event_grouping = "SingleAlert"
   }
