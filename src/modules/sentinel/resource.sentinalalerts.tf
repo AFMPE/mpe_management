@@ -38,13 +38,13 @@ resource "azurerm_sentinel_alert_rule_scheduled" "sentinel_alert" {
         create_incident = each.value.create_incident
 
         grouping {
-            enabled = each.value.grouping_configuration.enabled
-            reopen_closed_incident = each.value.grouping_configuration.reopen_closed_incident
-            lookback_duration = each.value.grouping_configuration.lookback_duration
-            entity_matching_method = each.value.grouping_configuration.entity_matching_method
-            group_by_entities = each.value.grouping_configuration.group_by_entities
-            group_by_alert_details = each.value.grouping_configuration.group_by_alert_details
-            group_by_custom_details = each.value.grouping_configuration.group_by_custom_details
+            enabled = each.value.grouping_enabled
+            reopen_closed_incident = each.value.reopen_closed_incident
+            lookback_duration = each.value.lookback_duration
+            entity_matching_method = each.value.entity_matching_method
+            group_by_entities = each.value.group_by_entities
+            group_by_alert_details = each.value.group_by_alert_details
+            group_by_custom_details = each.value.group_by_custom_details
         }
     }
 
