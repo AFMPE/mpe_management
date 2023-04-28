@@ -71,12 +71,15 @@ EOT
 
     enabled = true
     create_incident = true
-    grouping_enabled = false
-    reopen_closed_incident = false
+    grouping_enabled = true
+
+    reopen_closed_incident = true
+
     lookback_duration = "P1D"
     entity_matching_method = "AllEntities"
     group_by_entities = []
     group_by_alert_details = "Severity"
+    group_by_custom_details = true
     suppression_duration = "PT5H"
     suppression_enabled  = true
     event_grouping = { "aggregationKind": "SingleAlert"}
