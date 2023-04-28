@@ -77,7 +77,7 @@ EOT
         reopen_closed_incident = false
         lookback_duration = "P1D"
         entity_matching_method = AllEntities
-        group_by_entities = []
+        group_by_entities = ["Account"]
         group_by_alert_details = "Severity"
     }
 
