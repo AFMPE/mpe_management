@@ -17,8 +17,31 @@ resource "azurerm_sentinel_alert_rule_scheduled" "sentinel_alert" {
     severity = each.value.severity
     query = each.value.query
 
-    # https://faultbucket.ca/2020/09/terraform-nested-for_each-example/
-    dynamic "entity_mapping" {
-      
+    # https://faultbucket.ca/2020/09/terraform-nested-for_each-example/\
+    # https://github.com/hashicorp/terraform-provider-azurerm/issues/21231
+    entity_mappings {
+        # I need a nested for_each loop to iterate through the list of objects
+        # This is defined in the variables.sentinel.rules.tf file
     }
+
+    enabled = each.value.enabled
+    
+
+    incident_configuration {
+        create_incident = each.value.create_incident
+
+        grouping {
+            enabled = each.value.grouping_configuration.enabled
+            reopen_closed_incident = each.value.grouping_configuration.reopen_closed_incident
+            lookback_duration = each.value.grouping_configuration.lookback_duration
+            entity_matching_method = each.value.grouping_configuration.entity_matching_method
+            group_by_entities = each.value.grouping_configuration.group_by_entities
+            group_by_alert_details = each.value.grouping_configuration.group_by_alert_details
+            group_by_custom_details = each.value.grouping_configuration.group_by_custom_details
+        }
+    }
+
+    suppression_duration = each.value.suppression_duration
+    suppression_enabled = each.value.suppression_enabled
+    event_grouping = each.value.event_grouping
 }
