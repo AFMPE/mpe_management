@@ -39,7 +39,7 @@ resource "azurerm_sentinel_alert_rule_scheduled" "sentinel_alert" {
 
         grouping {
             enabled = each.value.grouping_enabled
-            reopen_closed_incident = each.value.reopen_closed_incident
+            reopen_closed_incidents = each.value.reopen_closed_incidents
             lookback_duration = each.value.lookback_duration
             entity_matching_method = each.value.entity_matching_method
             group_by_entities = each.value.group_by_entities
