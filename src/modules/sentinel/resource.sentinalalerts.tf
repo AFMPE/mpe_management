@@ -17,21 +17,15 @@ resource "azurerm_sentinel_alert_rule_scheduled" "sentinel_alert" {
     severity = each.value.severity
     query = each.value.query
 
-    # https://faultbucket.ca/2020/09/terraform-nested-for_each-example/\
-    # https://github.com/hashicorp/terraform-provider-azurerm/issues/21231
-
-    entity_mapping {
-      entity_type = ""
-      field_mapping {
-        
-      }
-    }
-    
-    entity_mapping {
-      entity_type = ""
-      field_mapping {
-        
-      }
+    dynamic "entity_mapping" {
+        for_each = each.value.entity_mappings
+        content {
+            entity_type = entity_mapping.value.entity_type
+            field_mapping {
+              identifier = entity_mapping.value.identifier
+              column_name = entity_mapping.value.field_name
+            }
+        }
     }
 
     enabled = each.value.enabled

@@ -49,22 +49,16 @@ locals {
     entity_mappings = [
       {
         entity_type = "Account"
-        field_mappings = [
-          {
-            identifier = "FullName"
-            field_name = "AccountCustomEntity"
-          }
-        ]
+        identifier = "FullName"
+        field_name = "AccountCustomEntity"
+         
       },
       {
         entity_type = "Host"
-        field_mappings = [
-          {
-            identifier = "FullName"
-            field_name = "HostCustomEntity"
+        identifier = "FullName"
+        field_name = "HostCustomEntity"
           }
-        ]
-      }
+          
     ]
 
     tactics              = ["Persistence"]

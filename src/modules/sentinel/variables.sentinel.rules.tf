@@ -20,10 +20,8 @@ variable "sentinel_rule_alerts" {
 
    entity_mappings = list(object({
       entity_type = string
-      field_mappings = list(object({
-        field_name = string
-        identifier     = string
-      }))
+      field_name = string
+      identifier     = string
     }))
     
     tactics = list(string)
@@ -33,8 +31,6 @@ variable "sentinel_rule_alerts" {
     description          = string
     enabled              = bool
     
-
-
     suppression_duration = string
     suppression_enabled  = bool
     
