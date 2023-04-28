@@ -85,7 +85,7 @@ EOT
 
     suppression_duration = ""
     supression_enabled = true
-    event_grouping = { aggregationKind: "SingleAlert"}
+    event_grouping = { "aggregationKind": "SingleAlert"}
   }
   
   }

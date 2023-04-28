@@ -49,7 +49,7 @@ variable "sentinel_rule_alerts" {
 
     suppression_duration = string
     suppression_enabled  = bool
-    event_grouping = map()
+    event_grouping = map(string)
   }))
   default = {}
 }
