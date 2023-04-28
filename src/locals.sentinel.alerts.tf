@@ -77,7 +77,7 @@ EOT
     entity_matching_method = "AllEntities"
     group_by_entities = []
     group_by_alert_details = ["Severity"]
-    suppression_duration = "P5D"
+    suppression_duration = "P1D"
     suppression_enabled  = true
     event_grouping = "SingleAlert"
   }
