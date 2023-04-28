@@ -31,9 +31,6 @@ variable "sentinel_rule_alerts" {
     description          = string
     enabled              = bool
     
-    suppression_duration = string
-    suppression_enabled  = bool
-    
     #Incident Configuration Block
     create_incident      = bool
     # Grouping Block in incident_configuration block

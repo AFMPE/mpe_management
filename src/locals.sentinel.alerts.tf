@@ -43,8 +43,6 @@ locals {
       )
       EOF
     
-    suppression_duration = "PT5H"
-    suppression_enabled  = true
   
     entity_mappings = [
       {
@@ -83,8 +81,8 @@ EOT
         group_by_alert_details = "Severity"
     }
 
-    suppression_duration = ""
-    supression_enabled = true
+    suppression_duration = "PT5H"
+    suppression_enabled  = true
     event_grouping = { "aggregationKind": "SingleAlert"}
   }
   

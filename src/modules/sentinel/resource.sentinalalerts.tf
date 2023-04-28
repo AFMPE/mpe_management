@@ -28,6 +28,9 @@ resource "azurerm_sentinel_alert_rule_scheduled" "sentinel_alert" {
         }
     }
 
+    tactics = each.value.tactics
+    techniques = each.value.techniques
+    display_name = each.value.display_name
     enabled = each.value.enabled
     
 
