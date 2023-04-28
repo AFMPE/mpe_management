@@ -19,9 +19,19 @@ resource "azurerm_sentinel_alert_rule_scheduled" "sentinel_alert" {
 
     # https://faultbucket.ca/2020/09/terraform-nested-for_each-example/\
     # https://github.com/hashicorp/terraform-provider-azurerm/issues/21231
-    entity_mappings {
-        # I need a nested for_each loop to iterate through the list of objects
-        # This is defined in the variables.sentinel.rules.tf file
+
+    entity_mapping {
+      entity_type = ""
+      field_mapping {
+        
+      }
+    }
+    
+    entity_mapping {
+      entity_type = ""
+      field_mapping {
+        
+      }
     }
 
     enabled = each.value.enabled
