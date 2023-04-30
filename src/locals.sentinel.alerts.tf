@@ -161,6 +161,58 @@ EOT
     event_grouping = "SingleAlert"
   }, # End Alert
   
+  "User_Added_To_Admin_Grp" = {
+    query_frequency      = "P1D"
+    query_period         = "P1D"
+    severity             = "Medium"
+
+    query                = <<EOF
+SecurityEvent
+| where EventID == 4728
+| where TargetUserName contains "Admin" 
+or TargetUserName contains "admin"
+| extend AccountCustomEntity = Account 
+| extend HostCustomEntity = Computer
+
+EOF
+    
+  
+    entity_mappings = [
+      {
+        entity_type = "Account"
+        identifier = "FullName"
+        field_name = "AccountCustomEntity"
+         
+      },
+      {
+        entity_type = "Host"
+        identifier = "FullName"
+        field_name = "HostCustomEntity"
+         
+      } 
+    ]
+
+    tactics              = ["Persistence"]
+    techniques           = ["T1098"]
+
+    display_name = "AAD_No_Password_Expiry"
+    description = <<EOT
+'Detects When user is added to a domain group that contains the word admin (Enterprise Admins,Domain Admins,DNS Admins)'
+
+EOT
+
+    enabled = true
+    create_incident = true
+    grouping_enabled = true
+    reopen_closed_incidents = true
+    lookback_duration = "P1D"
+    entity_matching_method = "AllEntities"
+    group_by_entities = []
+    group_by_alert_details = ["Severity"]
+    suppression_duration = "P1D"
+    suppression_enabled  = false
+    event_grouping = "SingleAlert"
+  }, # End Alert
 
   
   } # End Alert Rules
