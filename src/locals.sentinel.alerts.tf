@@ -82,7 +82,7 @@ EOT
     event_grouping = "SingleAlert"
   }, # End Alert
 
-  "Malicious_Web" = {
+  "Malicious_Web_Request" = {
     query_frequency      = "P1D"
     query_period         = "P1D"
     severity             = "Medium"
@@ -139,7 +139,7 @@ EOF
     tactics              = ["InitialAccess"]
     techniques           = ["T1190"]
 
-    display_name = "AAD_No_Password_Expiry"
+    display_name = "Malicious_Web_Request"
     description = <<EOT
 Detects unobstructed Web Application Firewall (WAF) activity in sessions where the WAF blocked incoming requests by computing the 
 ratio between blocked requests and unobstructed WAF requests in these sessions (BlockvsSuccessRatio metric). A high ratio value for 
