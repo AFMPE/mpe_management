@@ -546,12 +546,6 @@ EOF
   
     entity_mappings = [
       {
-        entity_type = "Account"
-        identifier = "Name"
-        field_name = "AccountCustomEntity"
-         
-      },
-      {
         entity_type = "IP"
         identifier = "Address"
         field_name = "ClientIp"
@@ -631,13 +625,7 @@ EOF
         identifier = "FullName"
         field_name = "AccountCustomEntity"
          
-      },
-      {
-        entity_type = "IP"
-        identifier = "Address"
-        field_name = "ClientIp"
-         
-      } 
+      }
     ]
 
     tactics              = ["InitialAccess"]
