@@ -767,7 +767,7 @@ EOF
       {
         entity_type = "Host"
         identifier = "HostName"
-        field_name = "HostName"
+        field_name = ""
          
       }
     ]
@@ -807,12 +807,6 @@ EOF
     
   
     entity_mappings = [
-      {
-        entity_type = "Account"
-        identifier = "FullName"
-        field_name = "FullName"
-         
-      },
       {
         entity_type = "IP"
         identifier = "Address"
