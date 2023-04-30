@@ -451,7 +451,7 @@ EOT
     enabled = true
     create_incident = true
     grouping_enabled = false
-    reopen_closed_incidents = flse
+    reopen_closed_incidents = false
     lookback_duration = "P1D"
     entity_matching_method = "AllEntities"
     group_by_entities = []
@@ -461,6 +461,207 @@ EOT
     event_grouping = "SingleAlert"
   }, # End Alert
 
+  "User_Account_Created_And_Disabled_Within_10_Minutes" = {
+    query_frequency      = "P1D"
+    query_period         = "P1D"
+    severity             = "Medium"
+
+    query                = <<EOF
+let timeframe = 1d;
+let spanoftime = 10m;
+let threshold = 0;
+SecurityEvent
+| where TimeGenerated > ago(timeframe+spanoftime)
+// A user account was enabled
+| where EventID == 4722
+| where AccountType =~ "User"
+| where TargetAccount !hassuffix "$"
+| project EnableTime = TimeGenerated, EnableEventID = EventID, EnableActivity = Activity, Computer, UserPrincipalName, 
+AccountUsedToEnable = SubjectAccount, SIDofAccountUsedToEnable = SubjectUserSid, TargetAccount = tolower(TargetAccount), TargetSid
+| join kind= inner (
+  SecurityEvent
+  | where TimeGenerated > ago(timeframe)
+  // A user account was disabled
+  | where EventID == 4725
+| where AccountType =~ "User"
+| project DisableTime = TimeGenerated, DisableEventID = EventID, DisableActivity = Activity, Computer, UserPrincipalName, 
+AccountUsedToDisable = SubjectAccount, SIDofAccountUsedToDisable = SubjectUserSid, TargetAccount = tolower(TargetAccount), TargetSid
+) on Computer, TargetAccount
+| where DisableTime - EnableTime < spanoftime
+| extend TimeDelta = DisableTime - EnableTime
+| where tolong(TimeDelta) >= threshold
+| project TimeDelta, EnableTime, EnableEventID, EnableActivity, Computer, TargetAccount, TargetSid, UserPrincipalName, AccountUsedToEnable, SIDofAccountUsedToEnable, 
+DisableTime, DisableEventID, DisableActivity, AccountUsedToDisable, SIDofAccountUsedToDisable
+| extend timestamp = EnableTime, AccountCustomEntity = AccountUsedToEnable, HostCustomEntity = Computer
+EOF
+    
+  
+    entity_mappings = [
+      {
+        entity_type = "Account"
+        identifier = "Name"
+        field_name = "AccountCustomEntity"
+         
+      },
+      {
+        entity_type = "Host"
+        identifier = "FullName"
+        field_name = "HostCustomEntity"
+         
+      } 
+    ]
+
+    tactics              = ["Persistence","PrivilegeEscalation"]
+    techniques           = ["T1078","T1098"]
+
+    display_name = "User account added to built in domain local or global group"
+    description =  <<EOT
+Identifies when a user account is enabled and then disabled within 10 minutes. This can be an indication of compromise and
+an adversary attempting to hide in the noise.
+EOT
+
+    enabled = true
+    create_incident = true
+    grouping_enabled = false
+    reopen_closed_incidents = false
+    lookback_duration = "P1D"
+    entity_matching_method = "AllEntities"
+    group_by_entities = []
+    group_by_alert_details = ["Severity"]
+    suppression_duration = "P1D"
+    suppression_enabled  = false
+    event_grouping = "SingleAlert"
+  }, # End Alert
+
+  "User_Account_Was_Locked_O365" = {
+    query_frequency      = "PT5H"
+    query_period         = "PT5H"
+    severity             = "Medium"
+
+    query                = <<EOF
+OfficeActivity 
+| where Operation == "UserLoginFailed" | where * contains "IdsLocked"
+EOF
+    
+  
+    entity_mappings = [
+      {
+        entity_type = "Account"
+        identifier = "Name"
+        field_name = "AccountCustomEntity"
+         
+      },
+      {
+        entity_type = "IP"
+        identifier = "Address"
+        field_name = "ClientIp"
+         
+      } 
+    ]
+
+    tactics              = ["CredentialAccess"]
+    techniques           = ["T1110"]
+
+    display_name = "User account added to built in domain local or global group"
+    description =  <<EOT
+Possible user account brute. Technique: T1110.
+EOT
+
+    enabled = true
+    create_incident = true
+    grouping_enabled = false
+    reopen_closed_incidents = false
+    lookback_duration = "P1D"
+    entity_matching_method = "AllEntities"
+    group_by_entities = []
+    group_by_alert_details = ["Severity"]
+    suppression_duration = "PT5H"
+    suppression_enabled  = false
+    event_grouping = "SingleAlert"
+  }, # End Alert
+
+  "User_Account_Login_CA_Spikes" = {
+    query_frequency      = "P1D"
+    query_period         = "P1D"
+    severity             = "Medium"
+
+    query                = <<EOF
+let starttime = 14d;
+let timeframe = 1d;
+let scorethreshold = 3;
+let baselinethreshold = 50;
+let aadFunc = (tableName:string){
+  // Failed Signins attempts with reasoning related to conditional access policies.
+  table(tableName)
+  | where TimeGenerated between (startofday(ago(starttime))..startofday(now()))
+  | where ResultDescription has_any ("conditional access", "CA") or ResultType in (50005, 50131, 53000, 53001, 53002, 52003, 70044)
+  | extend UserPrincipalName = tolower(UserPrincipalName)
+  | extend timestamp = TimeGenerated, AccountCustomEntity = UserPrincipalName
+};
+let aadSignin = aadFunc("SigninLogs");
+let aadNonInt = aadFunc("AADNonInteractiveUserSignInLogs");
+let allSignins = union isfuzzy=true aadSignin, aadNonInt;
+let TimeSeriesAlerts = 
+allSignins
+| make-series DailyCount=count() on TimeGenerated from startofday(ago(starttime)) to startofday(now()) step 1d by UserPrincipalName
+| extend (anomalies, score, baseline) = series_decompose_anomalies(DailyCount, scorethreshold, -1, 'linefit')
+| mv-expand DailyCount to typeof(double), TimeGenerated to typeof(datetime), anomalies to typeof(double), score to typeof(double), baseline to typeof(long)
+// Filtering low count events per baselinethreshold
+| where anomalies > 0 and baseline > baselinethreshold
+| extend AnomalyHour = TimeGenerated
+| project UserPrincipalName, AnomalyHour, TimeGenerated, DailyCount, baseline, anomalies, score;
+// Filter the alerts for specified timeframe
+TimeSeriesAlerts
+| where TimeGenerated > startofday(ago(timeframe))
+| join kind=inner ( 
+  allSignins
+  | where TimeGenerated > startofday(ago(timeframe))
+  // create a new column and round to hour
+  | extend DateHour = bin(TimeGenerated, 1h)
+  | summarize PartialFailedSignins = count(), LatestAnomalyTime = arg_max(TimeGenerated, *) by bin(TimeGenerated, 1h), OperationName, Category, ResultType, ResultDescription, UserPrincipalName, UserDisplayName, AppDisplayName, ClientAppUsed, IPAddress, ResourceDisplayName
+) on UserPrincipalName, $left.AnomalyHour == $right.DateHour
+| project LatestAnomalyTime, OperationName, Category, UserPrincipalName, UserDisplayName, ResultType, ResultDescription, AppDisplayName, ClientAppUsed, UserAgent, IPAddress, Location, AuthenticationRequirement, ConditionalAccessStatus, ResourceDisplayName, PartialFailedSignins, TotalFailedSignins = DailyCount, baseline, anomalies, score
+| extend timestamp = LatestAnomalyTime, IPCustomEntity = IPAddress, AccountCustomEntity = UserPrincipalName
+EOF
+    
+  
+    entity_mappings = [
+      {
+        entity_type = "Account"
+        identifier = "FullName"
+        field_name = "AccountCustomEntity"
+         
+      },
+      {
+        entity_type = "IP"
+        identifier = "Address"
+        field_name = "IPCustomEntity"
+         
+      } 
+    ]
+
+    tactics              = ["InitialAccess"]
+    techniques           = ["T1078"]
+
+    display_name = "User account added to built in domain local or global group"
+    description =  <<EOT
+ Identifies spike in failed sign-ins from user accounts due to conditional access policied.
+Spike is determined based on Time series anomaly which will look at historical baseline values.
+Ref : https://docs.microsoft.com/azure/active-directory/fundamentals/security-operations-user-accounts#monitoring-for-failed-unusual-sign-ins
+EOT
+
+    enabled = true
+    create_incident = true
+    grouping_enabled = false
+    reopen_closed_incidents = false
+    lookback_duration = "P1D"
+    entity_matching_method = "AllEntities"
+    group_by_entities = []
+    group_by_alert_details = ["Severity"]
+    suppression_duration = "P1D"
+    suppression_enabled  = false
+    event_grouping = "SingleAlert"
+  }, # End Alert
 
   } # End Alert Rules
 } # End locals
