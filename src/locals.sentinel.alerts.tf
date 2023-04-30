@@ -670,7 +670,7 @@ EOF
       {
         entity_type = "Host"
         identifier = "HostName"
-        field_name = "HostName"
+        field_name = "DeviceName"
          
       }
     ]
@@ -767,7 +767,7 @@ EOF
       {
         entity_type = "Host"
         identifier = "HostName"
-        field_name = "HostName"
+        field_name = "HostCustomEntity"
          
       }
     ]
@@ -810,7 +810,7 @@ EOF
       {
         entity_type = "Account"
         identifier = "FullName"
-        field_name = "FullName"
+        field_name = "AccountCustomEntity"
          
       },
       {
