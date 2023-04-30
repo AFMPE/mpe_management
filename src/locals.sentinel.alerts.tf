@@ -53,7 +53,7 @@ locals {
       },
       {
         entity_type = "Host"
-        identifier = "FullName"
+        identifier = "HostName"
         field_name = "HostCustomEntity"
           }
           
@@ -131,7 +131,7 @@ EOF
       {
         entity_type = "IP"
         identifier = "Address"
-        field_name = "CustomEntity"
+        field_name = "IPCustomEntity"
          
       } 
     ]
@@ -186,7 +186,7 @@ EOF
       },
       {
         entity_type = "Host"
-        identifier = "FullName"
+        identifier = "HostName"
         field_name = "HostCustomEntity"
          
       } 
@@ -635,7 +635,7 @@ EOF
       {
         entity_type = "IP"
         identifier = "Address"
-        field_name = "IPCustomEntity"
+        field_name = "ClientIp"
          
       } 
     ]
