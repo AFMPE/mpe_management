@@ -195,7 +195,7 @@ EOF
     tactics              = ["Persistence"]
     techniques           = ["T1098"]
 
-    display_name = "AAD_No_Password_Expiry"
+    display_name = "User added to admin group"
     description = <<EOT
 'Detects When user is added to a domain group that contains the word admin (Enterprise Admins,Domain Admins,DNS Admins)'
 
@@ -214,7 +214,147 @@ EOT
     event_grouping = "SingleAlert"
   }, # End Alert
 
+  "User_Account_Creation" = {
+    query_frequency      = "PT1H"
+    query_period         = "PT1H"
+    severity             = "Low"
+
+    query                = <<EOF
+SecurityEvent 
+| where EventID == 4688 and (Process == "net.exe" or Process == "net1.exe") and not(ParentProcessName == "net.exe") and (CommandLine contains "user" and CommandLine contains "/add" or CommandLine contains "/ad")
+| extend AccountCustomEntity = Account 
+| extend HostCustomEntity = Computer
+
+EOF
+    
   
+    entity_mappings = [
+      {
+        entity_type = "Account"
+        identifier = "Name"
+        field_name = "AccountCustomEntity"
+         
+      },
+      {
+        entity_type = "Host"
+        identifier = "HostName"
+        field_name = "HostCustomEntity"
+         
+      } 
+    ]
+
+    tactics              = ["Persistence"]
+    techniques           = ["T1098"]
+
+    display_name = "User Account Created"
+    description = <<EOT
+'Identifies attempts to create new local users. This is sometimes done by attackers to increase access to a system or domain.'
+
+EOT
+
+    enabled = true
+    create_incident = true
+    grouping_enabled = true
+    reopen_closed_incidents = true
+    lookback_duration = "PT5H"
+    entity_matching_method = "AllEntities"
+    group_by_entities = []
+    group_by_alert_details = ["Severity"]
+    suppression_duration = "PT5H"
+    suppression_enabled  = false
+    event_grouping = "SingleAlert"
+  }, # End Alert
+
+  "User_Account_Added_To_Global_Group" = {
+    query_frequency      = "P1D"
+    query_period         = "P1D"
+    severity             = "Low"
+
+    query                = <<EOF
+// For AD SID mappings - https://docs.microsoft.com/windows/security/identity-protection/access-control/active-directory-security-groups
+let WellKnownLocalSID = "S-1-5-32-5[0-9][0-9]$";
+let WellKnownGroupSID = "S-1-5-21-[0-9]*-[0-9]*-[0-9]*-5[0-9][0-9]$|S-1-5-21-[0-9]*-[0-9]*-[0-9]*-1102$|S-1-5-21-[0-9]*-[0-9]*-[0-9]*-1103$|S-1-5-21-[0-9]*-[0-9]*-[0-9]*-498$|S-1-5-21-[0-9]*-[0-9]*-[0-9]*-1000$";
+union isfuzzy=true 
+(
+SecurityEvent 
+// When MemberName contains '-' this indicates addition of a group to a group
+| where AccountType == "User" and MemberName != "-"
+// 4728 - A member was added to a security-enabled global group
+// 4732 - A member was added to a security-enabled local group
+// 4756 - A member was added to a security-enabled universal group
+| where EventID in (4728, 4732, 4756)   
+| where TargetSid matches regex WellKnownLocalSID or TargetSid matches regex WellKnownGroupSID
+// Exclude Remote Desktop Users group: S-1-5-32-555
+| where TargetSid !in ("S-1-5-32-555")
+| extend SimpleMemberName = substring(MemberName, 3, indexof_regex(MemberName, @",OU|,CN") - 3)
+| project TimeGenerated, EventID, Activity, Computer, SimpleMemberName, MemberName, MemberSid, TargetUserName, TargetDomainName, TargetSid, UserPrincipalName, SubjectUserName, SubjectUserSid
+| extend timestamp = TimeGenerated, AccountCustomEntity = SimpleMemberName, HostCustomEntity = Computer
+),
+(
+WindowsEvent 
+// 4728 - A member was added to a security-enabled global group
+// 4732 - A member was added to a security-enabled local group
+// 4756 - A member was added to a security-enabled universal group
+| where EventID in (4728, 4732, 4756)  and  not(EventData has "S-1-5-32-555")
+| extend SubjectUserSid = tostring(EventData.SubjectUserSid)
+| extend Account =  strcat(tostring(EventData.SubjectDomainName),"\\", tostring(EventData.SubjectUserName))
+| extend AccountType=case(Account endswith "$" or SubjectUserSid in ("S-1-5-18", "S-1-5-19", "S-1-5-20"), "Machine", isempty(SubjectUserSid), "", "User")
+| extend MemberName = tostring(EventData.MemberName)
+// When MemberName contains '-' this indicates addition of a group to a group
+| where AccountType == "User" and MemberName != "-"
+| extend TargetSid = tostring(EventData.TargetSid)
+| where TargetSid matches regex WellKnownLocalSID or TargetSid matches regex WellKnownGroupSID
+// Exclude Remote Desktop Users group: S-1-5-32-555
+| where TargetSid !in ("S-1-5-32-555")
+| extend SimpleMemberName = substring(MemberName, 3, indexof_regex(MemberName, @",OU|,CN") - 3)
+| extend MemberSid = tostring(EventData.MemberSid)
+| extend TargetUserName = tostring(EventData.TargetUserName)
+| extend TargetDomainName = tostring(EventData.TargetDomainName)
+| extend UserPrincipalName = tostring(EventData.UserPrincipalName)
+| extend SubjectUserName = tostring(EventData.SubjectUserName)
+| project TimeGenerated, EventID, Computer, SimpleMemberName, MemberName, MemberSid, TargetUserName, TargetDomainName, TargetSid, UserPrincipalName, SubjectUserName, SubjectUserSid
+| extend timestamp = TimeGenerated, AccountCustomEntity = SimpleMemberName, HostCustomEntity = Computer
+)
+EOF
+    
+  
+    entity_mappings = [
+      {
+        entity_type = "Account"
+        identifier = "Name"
+        field_name = "AccountCustomEntity"
+         
+      },
+      {
+        entity_type = "Host"
+        identifier = "HostName"
+        field_name = "HostCustomEntity"
+         
+      } 
+    ]
+
+    tactics              = ["Persistence","PrivilegeEscalation"]
+    techniques           = ["T1098","T1098"]
+
+    display_name = "User account added to built in domain local or global group"
+    description =  <<EOT
+Identifies when a user account has been added to a privileged built in domain local group or global group 
+such as the Enterprise Admins, Cert Publishers or DnsAdmins. Be sure to verify this is an expected addition.
+EOT
+
+    enabled = true
+    create_incident = true
+    grouping_enabled = true
+    reopen_closed_incidents = true
+    lookback_duration = "P1D"
+    entity_matching_method = "AllEntities"
+    group_by_entities = []
+    group_by_alert_details = ["Severity"]
+    suppression_duration = "P1D"
+    suppression_enabled  = false
+    event_grouping = "SingleAlert"
+  }, # End Alert
+
   } # End Alert Rules
 } # End locals
  
