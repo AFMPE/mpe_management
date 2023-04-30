@@ -442,7 +442,7 @@ EOF
     tactics              = ["Persistence","PrivilegeEscalation"]
     techniques           = ["T1078","T1098"]
 
-    display_name = "User account added to built in domain local or global group"
+    display_name = "User_Account_Created_And_Deleted_Within_10_Minutes"
     description =  <<EOT
 Identifies when a user account is created and then deleted within 10 minutes. This can be an indication of compromise and
 an adversary attempting to hide in the noise.
@@ -514,7 +514,7 @@ EOF
     tactics              = ["Persistence","PrivilegeEscalation"]
     techniques           = ["T1078","T1098"]
 
-    display_name = "User account added to built in domain local or global group"
+    display_name = "User_Account_Created_And_Disabled_Within_10_Minutes"
     description =  <<EOT
 Identifies when a user account is enabled and then disabled within 10 minutes. This can be an indication of compromise and
 an adversary attempting to hide in the noise.
@@ -562,7 +562,7 @@ EOF
     tactics              = ["CredentialAccess"]
     techniques           = ["T1110"]
 
-    display_name = "User account added to built in domain local or global group"
+    display_name = "User_Account_Was_Locked_O365"
     description =  <<EOT
 Possible user account brute. Technique: T1110.
 EOT
@@ -643,7 +643,7 @@ EOF
     tactics              = ["InitialAccess"]
     techniques           = ["T1078"]
 
-    display_name = "User account added to built in domain local or global group"
+    display_name = "User_Account_Login_CA_Spikes"
     description =  <<EOT
  Identifies spike in failed sign-ins from user accounts due to conditional access policied.
 Spike is determined based on Time series anomaly which will look at historical baseline values.
@@ -659,6 +659,130 @@ EOT
     group_by_entities = []
     group_by_alert_details = ["Severity"]
     suppression_duration = "P1D"
+    suppression_enabled  = false
+    event_grouping = "SingleAlert"
+  }, # End Alert
+
+  "User_Added_To_AAD_Privileged_Groups" = {
+    query_frequency      = "PT1H"
+    query_period         = "PT1H"
+    severity             = "Medium"
+
+    query                = <<EOF
+let OperationList = dynamic(["Add member to role","Add member to role in PIM requested (permanent)"]);
+let PrivilegedGroups = dynamic(["UserAccountAdmins","PrivilegedRoleAdmins","TenantAdmins"]);
+AuditLogs
+//| where LoggedByService =~ "Core Directory"
+| where Category =~ "RoleManagement"
+| where OperationName in~ (OperationList)
+| mv-expand TargetResources
+| extend modProps = parse_json(TargetResources).modifiedProperties
+| mv-expand bagexpansion=array modProps
+| evaluate bag_unpack(modProps)
+| extend displayName = column_ifexists("displayName", "NotAvailable"), newValue = column_ifexists("newValue", "NotAvailable")
+| where displayName =~ "Role.WellKnownObjectName"
+| extend DisplayName = displayName, GroupName = replace('"','',newValue)
+| extend initByApp = parse_json(InitiatedBy).app, initByUser = parse_json(InitiatedBy).user
+| extend AppId = initByApp.appId, 
+InitiatedByDisplayName = case(isnotempty(initByApp.displayName), initByApp.displayName, isnotempty(initByUser.displayName), initByUser.displayName, "not available"),
+ServicePrincipalId = tostring(initByApp.servicePrincipalId),
+ServicePrincipalName = tostring(initByApp.servicePrincipalName),
+UserId = initByUser.id,
+UserIPAddress = initByUser.ipAddress,
+UserRoles = initByUser.roles,
+UserPrincipalName = tostring(initByUser.userPrincipalName),
+TargetUserPrincipalName = tostring(TargetResources.userPrincipalName)
+| where GroupName in~ (PrivilegedGroups)
+// If you don't want to alert for operations from PIM, remove below filtering for MS-PIM.
+| where InitiatedByDisplayName != "MS-PIM"
+| project TimeGenerated, AADOperationType, Category, OperationName, AADTenantId, AppId, InitiatedByDisplayName, ServicePrincipalId, ServicePrincipalName, DisplayName, GroupName, UserId, UserIPAddress, UserRoles, UserPrincipalName, TargetUserPrincipalName
+| extend timestamp = TimeGenerated, AccountCustomEntity = case(isnotempty(ServicePrincipalName), ServicePrincipalName, isnotempty(ServicePrincipalId), ServicePrincipalId, isnotempty(UserPrincipalName), UserPrincipalName, "not available")
+EOF
+    
+  
+    entity_mappings = [
+      {
+        entity_type = "Account"
+        identifier = "FullName"
+        field_name = "AccountCustomEntity"
+         
+      },
+      {
+        entity_type = "Account"
+        identifier = "FullName"
+        field_name = "TargetUserPrincipalName"
+         
+      } 
+    ]
+
+    tactics              = ["Persistence","PrivilegeEscalation"]
+    techniques           = ["T1078","T1098"]
+
+    display_name = "User added to Azure Active Directory Privileged Groups"
+    description =  <<EOT
+This will alert when a user is added to any of the Privileged Groups.
+For further information on AuditLogs please see https://docs.microsoft.com/azure/active-directory/reports-monitoring/reference-audit-activities.
+For Administrator role permissions in Azure Active Directory please see https://docs.microsoft.com/azure/active-directory/users-groups-roles/directory-assign-admin-roles
+EOT
+
+    enabled = true
+    create_incident = true
+    grouping_enabled = false
+    reopen_closed_incidents = false
+    lookback_duration = "PT5H"
+    entity_matching_method = "AllEntities"
+    group_by_entities = []
+    group_by_alert_details = ["Severity"]
+    suppression_duration = "PT5H"
+    suppression_enabled  = false
+    event_grouping = "SingleAlert"
+  }, # End Alert
+
+  "User_Added_To_Local_Admins" = {
+    query_frequency      = "PT1H"
+    query_period         = "PT1H"
+    severity             = "Medium"
+
+    query                = <<EOF
+// Query for local admins being added using "net user" command
+// In this example we look for use possible uses of uncommon commandline options (/ad instead of /add)
+DeviceProcessEvents
+// To find executions of a known filename, it is better to filter on the filename (and possibly on folder path).
+| where FileName in~ ("net.exe", "net1.exe") and TimeGenerated > ago(1h)
+| where ProcessCommandLine has "localgroup administrators"
+| where ProcessCommandLine contains "/ad"
+| where not (FileName =~ "net1.exe" and InitiatingProcessFileName =~ "net.exe" and replace("net", "net1", InitiatingProcessCommandLine) =~ ProcessCommandLine)
+| where not(InitiatingProcessCommandLine has_any ("Scripts\\Startup\\Add_Admin.bat", "KACE"))
+
+EOF
+    
+  
+    entity_mappings = [
+      {
+        entity_type = "Host"
+        identifier = "HostName"
+        field_name = "DeviceNAme"
+         
+      }
+    ]
+
+    tactics              = ["Persistence"]
+    techniques           = ["T1078"]
+
+    display_name = "User added to local admins using net.exe"
+    description =  <<EOT
+Triggers on the use of the "net.exe" executable to add a user to the local administrator group. This alert also triggers on uncommon switches to accomplish this goal for example "/ad" instead of "/add".
+EOT
+
+    enabled = true
+    create_incident = true
+    grouping_enabled = true
+    reopen_closed_incidents = false
+    lookback_duration = "PT5H"
+    entity_matching_method = "AllEntities"
+    group_by_entities = []
+    group_by_alert_details = ["Severity"]
+    suppression_duration = "PT5H"
     suppression_enabled  = false
     event_grouping = "SingleAlert"
   }, # End Alert
