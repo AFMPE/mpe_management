@@ -696,6 +696,284 @@ EOT
     event_grouping = "SingleAlert"
   }, # End Alert
 
+  "Add_User_Admin_Group_365_Group" = {
+    query_frequency      = "PT5H"
+    query_period         = "PT5H"
+    severity             = "Medium"
+
+    query                = <<EOF
+OfficeActivity 
+| where ((Operation == "Add member to group") and (ResultStatus == "Success") and (ModifiedProperties contains "admin"))
+| extend AccountCustomEntity = UserId, IPCustomEntity = ClientIP
+EOF
+    
+  
+    entity_mappings = [
+      {
+        entity_type = "Account"
+        identifier = "FullName"
+        field_name = "AccountCustomEntity"
+         
+      },
+      {
+        entity_type = "IP"
+        identifier = "Address"
+        field_name = "IPCustomEntity"
+         
+      } 
+    ]
+
+    tactics              = ["Persistence"]
+    techniques           = ["T1098"]
+
+    display_name = "Add a User to an Admin Group (via office365)"
+    description =  <<EOT
+Added a user to an admin group in Office 365. Technique: T1098.
+EOT
+
+    enabled = true
+    create_incident = true
+    grouping_enabled = false
+    reopen_closed_incidents = false
+    lookback_duration = "PT5H"
+    entity_matching_method = "AllEntities"
+    group_by_entities = []
+    group_by_alert_details = ["Severity"]
+    suppression_duration = "PT5H"
+    suppression_enabled  = false
+    event_grouping = "SingleAlert"
+  }, # End Alert
+
+  "User_Added_To_Local_Admins" = {
+    query_frequency      = "PT1H"
+    query_period         = "PT1H"
+    severity             = "Medium"
+
+    query                = <<EOF
+// Query for local admins being added using "net user" command
+// In this example we look for use possible uses of uncommon commandline options (/ad instead of /add)
+DeviceProcessEvents
+// To find executions of a known filename, it is better to filter on the filename (and possibly on folder path).
+| where FileName in~ ("net.exe", "net1.exe") and TimeGenerated > ago(1h)
+| where ProcessCommandLine has "localgroup administrators"
+| where ProcessCommandLine contains "/ad"
+| where not (FileName =~ "net1.exe" and InitiatingProcessFileName =~ "net.exe" and replace("net", "net1", InitiatingProcessCommandLine) =~ ProcessCommandLine)
+| where not(InitiatingProcessCommandLine has_any ("Scripts\\Startup\\Add_Admin.bat", "KACE"))
+
+EOF
+    
+  
+    entity_mappings = [
+      {
+        entity_type = "Host"
+        identifier = "HostName"
+        field_name = "DeviceName"
+         
+      }
+    ]
+
+    tactics              = ["Persistence"]
+    techniques           = ["T1078"]
+
+    display_name = "User added to local admins using net.exe"
+    description =  <<EOT
+Triggers on the use of the "net.exe" executable to add a user to the local administrator group. This alert also triggers on uncommon switches to accomplish this goal for example "/ad" instead of "/add".
+EOT
+
+    enabled = true
+    create_incident = true
+    grouping_enabled = true
+    reopen_closed_incidents = false
+    lookback_duration = "PT5H"
+    entity_matching_method = "AllEntities"
+    group_by_entities = []
+    group_by_alert_details = ["Severity"]
+    suppression_duration = "PT5H"
+    suppression_enabled  = false
+    event_grouping = "SingleAlert"
+  }, # End Alert
+
+  "User_Added_To_Admin_365_Role" = {
+    query_frequency      = "PT1H"
+    query_period         = "PT1H"
+    severity             = "Medium"
+
+    query                = <<EOF
+OfficeActivity 
+| where ((ModifiedProperties contains "admin") and (Operation == "Add member to role") and (ResultStatus == "Success"))
+| extend AccountCustomEntity = UserId
+| extend IPCustomEntity = ClientIP
+EOF
+    
+  
+    entity_mappings = [
+      {
+        entity_type = "Account"
+        identifier = "FullName"
+        field_name = "DeviceName"
+         
+      },
+      {
+        entity_type = "IP"
+        identifier = "Address"
+        field_name = "IPCustomEntity"
+         
+      }
+    ]
+
+    tactics              = ["Persistence"]
+    techniques           = ["T1078"]
+
+    display_name = "Add a User to an Admin Role (via office365)"
+    description =  <<EOT
+Added a user to an admin role in Office 365. Technique: T1098.
+EOT
+
+    enabled = true
+    create_incident = true
+    grouping_enabled = false
+    reopen_closed_incidents = false
+    lookback_duration = "PT5H"
+    entity_matching_method = "AllEntities"
+    group_by_entities = []
+    group_by_alert_details = ["Severity"]
+    suppression_duration = "PT5H"
+    suppression_enabled  = false
+    event_grouping = "SingleAlert"
+  }, # End Alert
+
+  "Privileged_Role_Oustide_PIM" = {
+    query_frequency      = "P1D"
+    query_period         = "P1D"
+    severity             = "Low"
+
+    query                = <<EOF
+AuditLogs
+| where Category =~ "RoleManagement"
+| where OperationName has "Add member to role outside of PIM"
+        or (LoggedByService == "Core Directory" and OperationName == "Add member to role" and Identity !has "MS-PIM")
+| extend AccountCustomEntity = tostring(TargetResources[0].userPrincipalName), IPCustomEntity = tostring(parse_json(tostring(InitiatedBy.user)).ipAddress)
+EOF
+    
+  
+    entity_mappings = [
+      {
+        entity_type = "Account"
+        identifier = "FullName"
+        field_name = "AccountCustomEntity"
+         
+      },
+      {
+        entity_type = "IP"
+        identifier = "Address"
+        field_name = "IPCustomEntity"
+         
+      }
+    ]
+
+    tactics              = ["PrivilegeEscalation"]
+    techniques           = ["T1078"]
+
+    display_name = "Privileged Role Assigned Outside PIM"
+    description =  <<EOT
+Identifies a privileged role being assigned to a user outside of PIM
+Ref : https://docs.microsoft.com/azure/active-directory/fundamentals/security-operations-privileged-accounts#things-to-monitor-1
+EOT
+
+    enabled = true
+    create_incident = true
+    grouping_enabled = false
+    reopen_closed_incidents = false
+    lookback_duration = "P1D"
+    entity_matching_method = "AllEntities"
+    group_by_entities = []
+    group_by_alert_details = ["Severity"]
+    suppression_duration = "P1D"
+    suppression_enabled  = false
+    event_grouping = "SingleAlert"
+  }, # End Alert
+
+  "Multiple_Admin_Removal_New_Admin" = {
+    query_frequency      = "PT1H"
+    query_period         = "P7D"
+    severity             = "Medium"
+
+    query                = <<EOF
+let lookback = 7d; 
+let timeframe = 1h; 
+let GlobalAdminsRemoved = AuditLogs 
+| where TimeGenerated > ago(timeframe) 
+| where Category =~ "RoleManagement" 
+| where AADOperationType in ("Unassign", "RemoveEligibleRole") 
+| where ActivityDisplayName has_any ("Remove member from role", "Remove eligible member from role") 
+| mv-expand TargetResources 
+| mv-expand TargetResources.modifiedProperties 
+| extend displayName_ = tostring(TargetResources_modifiedProperties.displayName) 
+| where displayName_ =~ "Role.DisplayName" 
+| extend RoleName = tostring(parse_json(tostring(TargetResources_modifiedProperties.oldValue))) 
+| where RoleName == "Global Administrator" // Add other Privileged role if applicable 
+| extend InitiatingApp = tostring(parse_json(tostring(InitiatedBy.app)).displayName) 
+| extend Initiator = iif(isnotempty(InitiatingApp), InitiatingApp, tostring(parse_json(tostring(InitiatedBy.user)).userPrincipalName)) 
+| where Initiator != "MS-PIM"  // Filtering PIM events 
+| extend Target = tostring(TargetResources.userPrincipalName) 
+| summarize RemovedGlobalAdminTime = max(TimeGenerated), TargetAdmins = make_set(Target) by OperationName,  RoleName, Initiator, Result; 
+let GlobalAdminsAdded = AuditLogs 
+| where TimeGenerated > ago(lookback) 
+| where Category =~ "RoleManagement" 
+| where AADOperationType in ("Assign", "AssignEligibleRole") 
+| where ActivityDisplayName has_any ("Add eligible member to role", "Add member to role") and Result == "success" 
+| mv-expand TargetResources 
+| mv-expand TargetResources.modifiedProperties 
+| extend displayName_ = tostring(TargetResources_modifiedProperties.displayName) 
+| where displayName_ =~ "Role.DisplayName" 
+| extend RoleName = tostring(parse_json(tostring(TargetResources_modifiedProperties.newValue))) 
+| where RoleName == "Global Administrator" // Add other Privileged role if applicable 
+| extend InitiatingApp = tostring(parse_json(tostring(InitiatedBy.app)).displayName) 
+| extend Initiator = iif(isnotempty(InitiatingApp), InitiatingApp, tostring(parse_json(tostring(InitiatedBy.user)).userPrincipalName)) 
+| where Initiator != "MS-PIM"  // Filtering PIM events 
+| extend Target = tostring(TargetResources.userPrincipalName) 
+| summarize AddedGlobalAdminTime = max(TimeGenerated) by OperationName,  RoleName, Target, Initiator, Result 
+| extend AccountCustomEntity = Target; 
+GlobalAdminsAdded 
+| join kind= inner GlobalAdminsRemoved on $left.Target == $right.Initiator 
+| where AddedGlobalAdminTime < RemovedGlobalAdminTime 
+| extend NoofAdminsRemoved = array_length(TargetAdmins) 
+| where NoofAdminsRemoved > 1
+| project AddedGlobalAdminTime, Initiator, Target, AccountCustomEntity, RemovedGlobalAdminTime, TargetAdmins, NoofAdminsRemoved
+EOF
+    
+  
+    entity_mappings = [
+      {
+        entity_type = "Account"
+        identifier = "FullName"
+        field_name = "AccountCustomEntity"
+         
+      }
+    ]
+
+    tactics              = ["Impact"]
+    techniques           = ["T1531"]
+
+    display_name = "Multiple admin membership removals from newly created admin"
+    description =  <<EOT
+This query detects when newly created Global admin removes multiple existing global admins which can be an attempt by adversaries to lock down organization and retain sole access. 
+ Investigate reasoning and intention of multiple membership removal by new Global admins and take necessary actions accordingly.
+EOT
+
+    enabled = true
+    create_incident = true
+    grouping_enabled = false
+    reopen_closed_incidents = false
+    lookback_duration = "P1D"
+    entity_matching_method = "AllEntities"
+    group_by_entities = []
+    group_by_alert_details = ["Severity"]
+    suppression_duration = "P1D"
+    suppression_enabled  = false
+    event_grouping = "SingleAlert"
+  }, # End Alert
+
   } # End Alert Rules
 } # End locals
  
