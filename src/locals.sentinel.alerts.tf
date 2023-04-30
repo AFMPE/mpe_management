@@ -155,11 +155,13 @@ EOT
     lookback_duration = "P1D"
     entity_matching_method = "AllEntities"
     group_by_entities = []
-    group_by_alert_details = ["None"]
+    group_by_alert_details = ["Severity"]
     suppression_duration = "P1D"
     suppression_enabled  = false
     event_grouping = "SingleAlert"
   }, # End Alert
+  
+
   
   } # End Alert Rules
 } # End locals
