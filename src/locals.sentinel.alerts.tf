@@ -670,7 +670,7 @@ EOF
       {
         entity_type = "Host"
         identifier = "HostName"
-        field_name = "DeviceName"
+        field_name = "HostName"
          
       }
     ]
