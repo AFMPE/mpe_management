@@ -647,54 +647,6 @@ EOT
     event_grouping = "SingleAlert"
   }, # End Alert
 
-  "User_Added_To_Local_Admins" = {
-    query_frequency      = "PT1H"
-    query_period         = "PT1H"
-    severity             = "Medium"
-
-    query                = <<EOF
-// Query for local admins being added using "net user" command
-// In this example we look for use possible uses of uncommon commandline options (/ad instead of /add)
-DeviceProcessEvents
-// To find executions of a known filename, it is better to filter on the filename (and possibly on folder path).
-| where FileName in~ ("net.exe", "net1.exe") and TimeGenerated > ago(1h)
-| where ProcessCommandLine has "localgroup administrators"
-| where ProcessCommandLine contains "/ad"
-| where not (FileName =~ "net1.exe" and InitiatingProcessFileName =~ "net.exe" and replace("net", "net1", InitiatingProcessCommandLine) =~ ProcessCommandLine)
-| where not(InitiatingProcessCommandLine has_any ("Scripts\\Startup\\Add_Admin.bat", "KACE"))
-
-EOF
-    
-  
-    entity_mappings = [
-      {
-        entity_type = "Host"
-        identifier = "HostName"
-        field_name = "DeviceName"
-         
-      }
-    ]
-
-    tactics              = ["Persistence"]
-    techniques           = ["T1078"]
-
-    display_name = "User added to local admins using net.exe"
-    description =  <<EOT
-Triggers on the use of the "net.exe" executable to add a user to the local administrator group. This alert also triggers on uncommon switches to accomplish this goal for example "/ad" instead of "/add".
-EOT
-
-    enabled = true
-    create_incident = true
-    grouping_enabled = true
-    reopen_closed_incidents = false
-    lookback_duration = "PT5H"
-    entity_matching_method = "AllEntities"
-    group_by_entities = []
-    group_by_alert_details = ["Severity"]
-    suppression_duration = "PT5H"
-    suppression_enabled  = false
-    event_grouping = "SingleAlert"
-  }, # End Alert
 
   "Add_User_Admin_Group_365_Group" = {
     query_frequency      = "PT5H"
