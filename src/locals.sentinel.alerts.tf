@@ -843,8 +843,8 @@ EOT
   }, # End Alert
 
   "Privileged_Role_Oustide_PIM" = {
-    query_frequency      = "PT1D"
-    query_period         = "PT1D"
+    query_frequency      = "P1D"
+    query_period         = "P1D"
     severity             = "Low"
 
     query                = <<EOF
@@ -884,18 +884,18 @@ EOT
     create_incident = true
     grouping_enabled = false
     reopen_closed_incidents = false
-    lookback_duration = "PT1D"
+    lookback_duration = "P1D"
     entity_matching_method = "AllEntities"
     group_by_entities = []
     group_by_alert_details = ["Severity"]
-    suppression_duration = "PT1D"
+    suppression_duration = "P1D"
     suppression_enabled  = false
     event_grouping = "SingleAlert"
   }, # End Alert
 
   "Multiple_Admin_Removal_New_Admin" = {
     query_frequency      = "PT1H"
-    query_period         = "PT7D"
+    query_period         = "P7D"
     severity             = "Medium"
 
     query                = <<EOF
@@ -965,11 +965,11 @@ EOT
     create_incident = true
     grouping_enabled = false
     reopen_closed_incidents = false
-    lookback_duration = "PT1D"
+    lookback_duration = "P1D"
     entity_matching_method = "AllEntities"
     group_by_entities = []
     group_by_alert_details = ["Severity"]
-    suppression_duration = "PT1D"
+    suppression_duration = "P1D"
     suppression_enabled  = false
     event_grouping = "SingleAlert"
   }, # End Alert
