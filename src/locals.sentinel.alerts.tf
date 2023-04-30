@@ -767,7 +767,7 @@ EOF
       {
         entity_type = "Host"
         identifier = "HostName"
-        field_name = "DeviceName"
+        field_name = "HostName"
          
       }
     ]
@@ -810,7 +810,7 @@ EOF
       {
         entity_type = "Account"
         identifier = "FullName"
-        field_name = "DeviceName"
+        field_name = "FullName"
          
       },
       {
