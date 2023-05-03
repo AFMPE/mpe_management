@@ -53,20 +53,22 @@ variable "sentinel_rule_alerts" {
 # Sentinel Configuration  ##
 ############################
 
-/* sentinel_rule_alerts = {
-  "malicious_web_request" = {
-    name                 = "A potentially malicious web request was executed against a web server"
-    display_name         = "A potentially malicious web request was executed against a web server"
-    description          = <<EOT
+/* variable "sentinel_rule_alerts" {
+  description = "A map of alerts to be created."
+  default = {
+    "malicious_web_request" = {
+      name                 = "A potentially malicious web request was executed against a web server"
+      display_name         = "A potentially malicious web request was executed against a web server"
+      description          = <<EOT
         Detects unobstructed Web Application Firewall (WAF) activity in sessions where the WAF blocked incoming requests by computing the 
         ratio between blocked requests and unobstructed WAF requests in these sessions (BlockvsSuccessRatio metric). A high ratio value for 
         a given client IP and hostname calls for further investigation of the WAF data in that session, due to the significantly high number 
         of blocked requests and a few unobstructed logs which may be malicious but have passed undetected through the WAF. The successCode 
         variable defines what the detection thinks is a successful status code, and should be altered to fit the environment.
         EOT
-    enabled              = false
-    severity             = "Medium"
-    query                = <<EOF
+      enabled              = false
+      severity             = "Medium"
+      query                = <<EOF
         let queryperiod = 1d;
         let mode = 'Blocked';
         let successCode = dynamic(['200', '101','204', '400','504','304','401','500']);
@@ -104,36 +106,37 @@ variable "sentinel_rule_alerts" {
         | sort by BlockvsSuccessRatio desc, timestamp asc
         | project-reorder SessionBlockedStarted, SessionBlockedEnded, hostname_s, clientIp_s, SessionBlockedCount, SuccessfulAccessCount, BlockvsSuccessRatio, SuccessCodes, RequestURIs, OriginalRequestURIs, UserAgents
         EOF
-    query_frequency      = "P1D"
-    query_period         = "P1D"
-    action               = "Log"
-    suppression_duration = "PT5H"
-    suppression_enabled  = false
-    grouping             = false
-    create_incident      = true
-    incident_configuration = {
-      reopen_closed_incident  = false
-      lookback_duration       = "P1D"
-      entity_matching_method  = "AllEntities"
-      group_by_entities       = []
-      group_by_alert_details  = ["None"]
-      group_by_custom_details = ["None"]
-    }
-    entity_mappings = [
-      {
-        entity_type = "IP"
-        field_mappings = [
-          {
-            identifier = "IPAddress"
-            field_name = "IPCustomEntity"
-          }
-        ]
+      query_frequency      = "P1D"
+      query_period         = "P1D"
+      action               = "Log"
+      suppression_duration = "PT5H"
+      suppression_enabled  = false
+      grouping             = false
+      create_incident      = true
+      incident_configuration = {
+        reopen_closed_incident  = false
+        lookback_duration       = "P1D"
+        entity_matching_method  = "AllEntities"
+        group_by_entities       = []
+        group_by_alert_details  = ["None"]
+        group_by_custom_details = ["None"]
       }
-    ]
-    tactics    = ["InitialAccess"]
-    techniques = ["T1190"]
-    trigger_operator = ""
-    trigger_threshold = 0
+      entity_mappings = [
+        {
+          entity_type = "IP"
+          field_mappings = [
+            {
+              identifier = "IPAddress"
+              field_name = "IPCustomEntity"
+            }
+          ]
+        }
+      ]
+      tactics           = ["InitialAccess"]
+      techniques        = ["T1190"]
+      trigger_operator  = ""
+      trigger_threshold = 0
+    }
   }
 }
  */

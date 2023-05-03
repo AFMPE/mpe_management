@@ -151,3 +151,31 @@ variable "svcs_vnet_subnet_service_endpoints" {
   type        = list(string)
   default = null
 }
+
+#############################
+## Peering Configuration  ###
+#############################
+
+variable "allow_virtual_spoke_network_access" {
+  description = "If set to true, will allow the virtual spoke network to access the workload."
+  type        = bool
+  default     = null
+}
+
+variable "allow_forwarded_spoke_traffic" {
+  description = "Option allow_forwarded_traffic for the spoke vnet to peer. Controls if forwarded traffic from VMs in the remote virtual network is allowed. Defaults to false. https://www.terraform.io/docs/providers/azurerm/r/virtual_network_peering.html#allow_forwarded_traffic"
+  type        = bool
+  default     = null
+}
+
+variable "allow_gateway_spoke_transit" {
+  description = "Option allow_gateway_transit for the spoke vnet to peer. Controls gatewayLinks can be used in the remote virtual network’s link to the local virtual network. https://www.terraform.io/docs/providers/azurerm/r/virtual_network_peering.html#allow_gateway_transit"
+  type        = bool
+  default     = null
+}
+
+variable "use_remote_spoke_gateway" {
+  description = "Option use_remote_gateway for the spoke vnet to peer. Controls if remote gateways can be used on the local virtual network. https://www.terraform.io/docs/providers/azurerm/r/virtual_network_peering.html#use_remote_gateways"
+  type        = bool
+  default     = null
+}

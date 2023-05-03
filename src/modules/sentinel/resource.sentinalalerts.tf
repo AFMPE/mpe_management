@@ -7,6 +7,36 @@ DESCRIPTION: This resource generates sentinel alerts based on the alert rules in
 AUTHOR/S: Curtis Slone
 */
 
+/* module "sentinel_rules" {
+  source  = "azurenoops/overlays-sentinel-rules/azurerm//modules/scheduled-alert-rule"
+  version = ">= 0.1.0"
+
+  for_each                   = var.sentinel_rule_alerts
+  enabled                    = each.value.enabled
+  name                       = each.value.key
+  display_name               = each.value.display_name
+  log_analytics_workspace_id = var.log_analytics_ws_id
+  query_frequency            = each.value.query_frequency
+  query_period               = each.value.query_period
+  severity                   = each.value.severity
+  query                      = each.value.query
+  entity_mapping             = each.value.entity_mappings
+  action                     = each.value.action
+  suppression_duration       = each.value.suppression_duration
+  suppression_enabled        = each.value.suppression_enabled
+  event_grouping             = each.value.event_grouping
+  tactics                    = each.value.tactics
+  techniques                 = each.value.techniques
+  description                = each.value.description
+  create_incident            = each.value.create_incident
+  grouping                   = each.value.grouping
+  incident_configuration     = each.value.incident_configuration
+  entity_mappings            = each.value.entity_mappings
+  trigger_operator           = each.value.trigger_operator
+  trigger_threshold          = each.value.trigger_threshold
+
+} */
+
 resource "azurerm_sentinel_alert_rule_scheduled" "sentinel_alert" {
     
     for_each = var.sentinel_rule_alerts

@@ -30,7 +30,7 @@ AUTHOR/S: jspinella
 module "mod_operational_logging" {
   providers = { azurerm = azurerm.operations }
   source    = "azurenoops/overlays-hubspoke/azurerm//modules/operational-logging"
-  version   = "1.0.7"
+  version   = ">= 1.0.0"
 
   #####################################
   ## Global Settings Configuration  ###
@@ -95,7 +95,7 @@ module "mod_operational_logging" {
 module "mod_hub_network" {
   providers = { azurerm = azurerm.hub }
   source    = "azurenoops/overlays-hubspoke/azurerm//modules/virtual-network-hub"
-  version   = "1.0.7"
+  version   = ">= 1.0.0"
 
   #####################################
   ## Global Settings Configuration  ###
@@ -202,12 +202,9 @@ module "mod_hub_network" {
 
 // Resources for the Operations Spoke
 module "mod_ops_network" {
-  depends_on = [
-    module.mod_hub_network
-  ]
   providers = { azurerm = azurerm.operations }
   source    = "azurenoops/overlays-hubspoke/azurerm//modules/virtual-network-spoke"
-  version   = "1.0.7"
+  version   = ">= 1.0.0"
 
   #####################################
   ## Global Settings Configuration  ###
@@ -242,7 +239,7 @@ module "mod_ops_network" {
   hub_firewall_private_ip_address = module.mod_hub_network.firewall_private_ip
 
   # (Optional) Enable forced tunneling for Route Table
-  enable_forced_tunneling_on_route_table = true
+  enable_forced_tunneling_on_route_table = local.enable_forced_tunneling
 
   # (Optional) Operations Network Security Group
   # This is default values, do not need this if keeping default values
@@ -253,6 +250,15 @@ module "mod_ops_network" {
 
   # Network Security Group Rules to apply to the Operatioms Virtual Network
   nsg_additional_rules = local.ops_nsg_rules
+
+  #############################
+  ## Peering Configuration  ###
+  #############################
+
+  allow_virtual_spoke_network_access = local.allow_virtual_spoke_network_access
+  allow_forwarded_spoke_traffic      = local.allow_forwarded_spoke_traffic
+  allow_gateway_spoke_transit        = local.allow_gateway_spoke_transit
+  use_remote_spoke_gateway           = local.use_remote_spoke_gateway
 
   #############################
   ## Misc Configuration     ###
@@ -268,12 +274,9 @@ module "mod_ops_network" {
 
 // Resources for the Shared Services Spoke
 module "mod_svcs_network" {
-  depends_on = [
-    module.mod_hub_network
-  ]
   providers = { azurerm = azurerm.sharedservices }
   source    = "azurenoops/overlays-hubspoke/azurerm//modules/virtual-network-spoke"
-  version   = "1.0.7"
+  version   = ">= 1.0.0"
 
   #####################################
   ## Global Settings Configuration  ###
@@ -311,7 +314,7 @@ module "mod_svcs_network" {
   hub_firewall_private_ip_address = module.mod_hub_network.firewall_private_ip
 
   # (Optional) Enable forced tunneling for Route Table
-  enable_forced_tunneling_on_route_table = true
+  enable_forced_tunneling_on_route_table = local.enable_forced_tunneling
 
   # (Optional) Shared Services Network Security Group
   # This is default values, do not need this if keeping default values
@@ -322,6 +325,15 @@ module "mod_svcs_network" {
 
   # Network Security Group Rules to apply to the Shared Services Virtual Network
   nsg_additional_rules = local.svcs_nsg_rules
+
+  #############################
+  ## Peering Configuration  ###
+  #############################
+
+  allow_virtual_spoke_network_access = var.allow_virtual_spoke_network_access
+  allow_forwarded_spoke_traffic      = var.allow_forwarded_spoke_traffic
+  allow_gateway_spoke_transit        = var.allow_gateway_spoke_transit
+  use_remote_spoke_gateway           = var.use_remote_spoke_gateway
 
   #############################
   ## Misc Configuration     ###

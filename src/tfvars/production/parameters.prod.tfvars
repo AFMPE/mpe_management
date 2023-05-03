@@ -11,7 +11,7 @@ root_management_group_display_name = "ampe" # the root management group display 
 
 # Budgets for management groups
 enable_management_groups_budgets = true
-budget_contact_emails = ["ampe@missionpartners.us"] # email addresses to send alerts to for this subscription
+budget_contact_emails = ["afmpe_admins@missionpartners.us"] # email addresses to send alerts to for this subscription
 
 ###########################
 ## Global Configuration  ##
@@ -34,7 +34,7 @@ enable_resource_locks = false
 ## Security Center Configuration  ##
 ####################################
 
-contact_emails = ["mpe@afmpe.com"] # email addresses to send alerts to for this subscription
+contact_emails = ["afmpe_admins@missionpartners.us"] # email addresses to send alerts to for this subscription
 
 #########################################
 ## Remote Storage State Configuration  ##
@@ -102,6 +102,15 @@ svcs_vnet_subnet_service_endpoints = [
   "Microsoft.Sql",
   "Microsoft.Storage",
 ]
+
+#############################
+## Peering Configuration  ###
+#############################
+
+allow_virtual_spoke_network_access = true
+allow_forwarded_spoke_traffic      = true
+allow_gateway_spoke_transit        = true
+use_remote_spoke_gateway           = false
 
 ###################################
 # Shared Services Configuration  ##
