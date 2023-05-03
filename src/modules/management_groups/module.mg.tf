@@ -14,7 +14,7 @@ AUTHOR/S: jspinella
 
 module "mod_management_group" {  
   source            = "azurenoops/overlays-management-groups/azurerm"
-  version           = "~> 1.0.0"
+  version           = ">= 1.0.0"
   root_id           = local.root_id
   root_parent_id    = data.azurerm_subscription.current.tenant_id
   root_name         = local.root_name

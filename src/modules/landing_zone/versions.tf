@@ -17,20 +17,6 @@ DESCRIPTION: The following components will be options in this deployment
 AUTHOR/S: jspinella
 */
 
-terraform {
-  required_version = ">= 1.3"
-  required_providers {
-    azurerm = {
-      source  = "hashicorp/azurerm"
-      version = "~> 3.36"
-    }
-    azurenoopsutils = {
-      source  = "azurenoops/azurenoopsutils"
-      version = "~> 1.0.4"
-    }
-  }  
-}
-
 provider "azurerm" {
   subscription_id = var.subscription_id_hub
 

@@ -92,6 +92,7 @@ locals {
   # The following locals are used to define the firewall for the hub resources
   enable_firewall         = var.enable_firewall
   enable_forced_tunneling = var.enable_force_tunneling
+  
   firewall_config = {
     sku_name          = "AZFW_VNet"
     sku_tier          = "Premium"
@@ -115,6 +116,34 @@ locals {
           source_addresses      = ["*"]
           destination_addresses = ["AzureCloud"]
           destination_ports     = ["*"]
+        }
+      ]
+    },
+    { # Allow App Service Environment
+      name     = "AppServiceEnvironment"
+      priority = "300"
+      action   = "Allow"
+      rules = [
+        {
+          name                  = "NTP"
+          protocols             = ["Any"]
+          source_addresses      = ["*"]
+          destination_addresses = ["*"]
+          destination_ports     = ["123"]
+        }
+      ]
+    },
+    { # Allow App Service Environment
+      name     = "AzureMonitor"
+      priority = "500"
+      action   = "Allow"
+      rules = [
+        {
+          name                  = "AzureMonitor"
+          protocols             = ["TCP"]
+          source_addresses      = ["*"]
+          destination_addresses = ["AzureMonitor"]
+          destination_ports     = ["80","443","12000"]
         }
       ]
     },
@@ -149,6 +178,22 @@ locals {
           }
         }
       ]
+    },
+    { # Allow App Service Environment
+      name     = "AppServiceEnvironment"
+      priority = "500"
+      action   = "Allow"
+      rules = [
+        {
+          name              = "AppServiceEnvironment"
+          source_addresses  = ["*"]
+          destination_fqdns = ["AppServiceEnvironment", "WindowsUpdate"]    
+          protocols = {
+            type = "Https"
+            port = 443
+          }      
+        }
+      ]
     }
   ]
 
@@ -163,6 +208,12 @@ locals {
   # The following locals are used to define the spoke resources
   deployed_to_hub_subscription = true
   deny_all_inbound             = false
+
+  # Peerings
+  allow_virtual_spoke_network_access = var.allow_virtual_spoke_network_access
+  allow_forwarded_spoke_traffic      = var.allow_forwarded_spoke_traffic
+  allow_gateway_spoke_transit        = var.allow_gateway_spoke_transit
+  use_remote_spoke_gateway           = var.use_remote_spoke_gateway
 
   # The following locals are used to define the ops resources
   ops_name                     = var.ops_name

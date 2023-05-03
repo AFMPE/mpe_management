@@ -12,7 +12,7 @@ AUTHOR/S: jspinella
 ###############################
 module "mod_shared_keyvault" {
   source  = "azurenoops/overlays-key-vault/azurerm"
-  version = "~> 1.0.2"
+  version = ">= 1.0.0"
 
   depends_on = [
     azurerm_private_dns_zone.dns_zone

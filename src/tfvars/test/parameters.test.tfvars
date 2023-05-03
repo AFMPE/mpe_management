@@ -9,13 +9,13 @@
 # Management Groups Configuration  ##
 #####################################
 
-enable_management_groups           = false   # enable management groups for this subscription
+enable_management_groups           = false  # enable management groups for this subscription
 root_management_group_id           = "ampe" # the root management group id for this subscription
 root_management_group_display_name = "ampe" # the root management group display name for this subscription
 
 # Budgets for management groups
 enable_management_groups_budgets = false
-budget_contact_emails = ["ampe@missionpartners.us"] # email addresses to send alerts to for this subscription
+budget_contact_emails            = ["ampe@missionpartners.us"] # email addresses to send alerts to for this subscription
 
 ###########################
 ## Global Configuration  ##
@@ -69,10 +69,10 @@ hub_vnet_subnet_service_endpoints = [
   "Microsoft.Storage",
 ]
 
-enable_firewall              = true
-enable_force_tunneling       = true
-firewall_supernet_IP_address = "10.0.96.0/19"
-enable_bastion_host          = true
+enable_firewall                        = true
+enable_force_tunneling                 = true
+firewall_supernet_IP_address           = "10.0.96.0/19"
+enable_bastion_host                    = true
 
 ######################################
 # Operations Spoke Virtual Network ###
@@ -110,13 +110,22 @@ svcs_vnet_subnet_service_endpoints = [
   "Microsoft.Storage",
 ]
 
+#############################
+## Peering Configuration  ###
+#############################
+
+allow_virtual_spoke_network_access = true
+allow_forwarded_spoke_traffic      = true
+allow_gateway_spoke_transit        = true
+use_remote_spoke_gateway           = false
+
 ###################################
 # Shared Services Configuration  ##
 ###################################
 
 # Azure Key Vault
-enabled_for_deployment = true
-enabled_for_disk_encryption = true
+enabled_for_deployment          = true
+enabled_for_disk_encryption     = true
 enabled_for_template_deployment = true
 
 admin_group_name = "afmpe_admins"

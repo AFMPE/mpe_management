@@ -16,7 +16,7 @@ AUTHOR/S: jspinella
 module "mod_service_health_monitoring" {
   for_each = var.service_alerts
   source   = "azurenoops/overlays-monitoring-service-alerts/azurerm"
-  version  = "~> 0.1.0"
+  version  = ">= 0.1.0"
 
   existing_resource_group_name = var.resource_group_name
   location                     = var.location

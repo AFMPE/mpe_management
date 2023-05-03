@@ -22,7 +22,7 @@ AUTHOR/S: jspinella
 // Resources for the Operations Spoke
 module "mod_workload_network" {
   source  = "azurenoops/overlays-hubspoke/azurerm//modules/virtual-network-spoke"
-  version = "~> 1.0.7"
+  version = ">= 1.0.0"
 
   #####################################
   ## Global Settings Configuration  ###
