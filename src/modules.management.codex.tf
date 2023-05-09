@@ -14,4 +14,11 @@ AUTHOR/S: jspinella
 
 module "mod_codex" {
   source = "./modules/codex"
+
+  required                       = var.required
+  location                       = var.default_location
+  subscription_id_hub            = var.subscription_id_hub  
+  state_sa_rg                    = local.state_sa_rg
+  state_sa_name                  = local.state_sa_name
+  state_sa_container_name        = local.state_sa_container_name
 }
