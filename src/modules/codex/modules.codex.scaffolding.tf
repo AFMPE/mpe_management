@@ -10,7 +10,7 @@ module "mod_codex_rg" {
   version = ">= 1.0.1"
 
   location                = local.location
-  use_location_short_name = var.use_location_short_name # Use the short location name in the resource group name
+  use_location_short_name = true # Use the short location name in the resource group name
   org_name                = local.org_name
   environment             = local.deploy_environment
   workload_name           = local.workload_name
