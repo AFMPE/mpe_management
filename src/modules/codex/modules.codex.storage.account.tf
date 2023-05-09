@@ -4,10 +4,10 @@
 #---------------------------------------------------------
 # CodeX Storage Account Creation
 #----------------------------------------------------------
-module "mgt_loganalytics_sa" {
+module "codex_loganalytics_sa" {
   source                   = "azurenoops/overlays-storage-account/azurerm"
   version                  = ">= 0.1.0"
-  depends_on               = [module.mod_scaffold_rg]
+  depends_on               = [module.mod_codex_rg]
   resource_group_name      = module.mod_codex_rg.resource_group_name
   location                 = local.location
   org_name                 = local.org_name
@@ -19,5 +19,5 @@ module "mgt_loganalytics_sa" {
   account_replication_type = "GRS"
   # Locks
   enable_resource_locks = var.enable_resource_locks
-  add_tags              = merge({ "ResourceName" = format("codexst%s", lower(replace(module.mgt_loganalytics_sa.storage_account_name, "/[[:^alnum:]]/", ""))) }, local.hub_resources_tags, )
+  add_tags              = merge(local.hub_resources_tags, )
 }
