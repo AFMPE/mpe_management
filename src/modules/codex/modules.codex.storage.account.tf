@@ -16,7 +16,7 @@ module "codex_loganalytics_sa" {
   workload_name            = local.workload_name
   account_kind             = "StorageV2"
   account_tier             = "Standard"
-  account_replication_type = "GRS"
+  account_replication_type = "LRS"
   # Locks
   enable_resource_locks = var.enable_resource_locks
   add_tags              = merge(local.hub_resources_tags, )
