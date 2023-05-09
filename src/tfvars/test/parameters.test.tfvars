@@ -15,7 +15,7 @@ root_management_group_display_name = "ampe" # the root management group display 
 
 # Budgets for management groups
 enable_management_groups_budgets = false
-budget_contact_emails            = ["ampe@missionpartners.us"] # email addresses to send alerts to for this subscription
+budget_contact_emails            = ["ampe_admins@missionpartners.us"] # email addresses to send alerts to for this subscription
 
 ###########################
 ## Global Configuration  ##
@@ -41,7 +41,7 @@ subscription_id_hub = "00000-00000-0000000-000"
 ## Security Center Configuration  ##
 ####################################
 
-contact_emails = ["mpe@missionpartners.us"] # email addresses to send alerts to for this subscription
+contact_emails = ["ampe_admins@missionpartners.us"] # email addresses to send alerts to for this subscription
 
 #########################################
 ## Remote Storage State Configuration  ##

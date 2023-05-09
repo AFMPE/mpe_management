@@ -132,6 +132,8 @@ module "mod_hub_network" {
   hub_private_endpoint_network_policies_enabled     = false
   hub_private_link_service_network_policies_enabled = true
 
+  add_subnets = local.hub_vnet_subnets
+
   # (Optional) Hub Network Security Group
   # This is default values, do not need this if keeping default values
   # NSG rules are not created by default for Azure NoOps Hub Subnet

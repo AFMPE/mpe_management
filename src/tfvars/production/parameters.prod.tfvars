@@ -10,8 +10,8 @@ root_management_group_id           = "ampe" # the root management group id for t
 root_management_group_display_name = "ampe" # the root management group display name for this subscription
 
 # Budgets for management groups
-enable_management_groups_budgets = true
-budget_contact_emails = ["afmpe_admins@missionpartners.us"] # email addresses to send alerts to for this subscription
+enable_management_groups_budgets = false
+budget_contact_emails            = ["ampe_admins@missionpartners.us"] # email addresses to send alerts to for this subscription
 
 ###########################
 ## Global Configuration  ##
@@ -30,20 +30,23 @@ default_location = "eastus"
 # Enable locks on resources
 enable_resource_locks = false
 
+# Used during testing, comment when not testing
+#subscription_id_hub = "00000-00000-0000000-000"
+
 ####################################
 ## Security Center Configuration  ##
 ####################################
 
-contact_emails = ["afmpe_admins@missionpartners.us"] # email addresses to send alerts to for this subscription
+contact_emails = ["ampe_admins@missionpartners.us"] # email addresses to send alerts to for this subscription
 
 #########################################
 ## Remote Storage State Configuration  ##
 #########################################
 
 # Deployment state storage information
-state_sa_name           = "afmpetfmgtprodh8dc4qua"
+state_sa_name           = "afmpetfmgth8dc4qua"
 state_sa_rg             = "afmpe-network-artifacts-rg"
-state_sa_container_name = "core-mgt-prod-tfstate"
+state_sa_container_name = "core-mgt-tfstate"
 
 ################################
 # Landing Zone Configuration  ##
@@ -62,10 +65,10 @@ hub_vnet_subnet_service_endpoints = [
   "Microsoft.Storage",
 ]
 
-enable_firewall              = true
-enable_force_tunneling       = true
-firewall_supernet_IP_address = "10.0.96.0/19"
-enable_bastion_host          = true
+enable_firewall                        = true
+enable_force_tunneling                 = true
+firewall_supernet_IP_address           = "10.0.96.0/19"
+enable_bastion_host                    = true
 
 ######################################
 # Operations Spoke Virtual Network ###
@@ -117,12 +120,11 @@ use_remote_spoke_gateway           = false
 ###################################
 
 # Azure Key Vault
-enabled_for_deployment = true
-enabled_for_disk_encryption = true
+enabled_for_deployment          = true
+enabled_for_disk_encryption     = true
 enabled_for_template_deployment = true
 
 admin_group_name = "afmpe_admins"
-
 
 # Bastion VM
 
