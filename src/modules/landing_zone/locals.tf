@@ -80,19 +80,27 @@ locals {
 # The following locals are used to landing Zone - Partner Environment - Hub
 locals {
   # The following locals are used to define the hub resources
-  hub_name                     = var.hub_name
-  hub_vnet_address_space       = var.hub_vnet_address_space
-  create_ddos_plan             = false
-  create_network_watcher       = true
-  hub_subnet_addresses         = var.hub_vnet_subnet_address_prefixes
-  hub_vnet_subnets             = {}
+  hub_name               = var.hub_name
+  hub_vnet_address_space = var.hub_vnet_address_space
+  create_ddos_plan       = false
+  create_network_watcher = true
+  hub_subnet_addresses   = var.hub_vnet_subnet_address_prefixes
+  hub_vnet_subnets = {
+    "dmz_Subnet" = {
+      name                                       = "dmz"
+      address_prefixes                           = ["10.0.100.192/27"]
+      service_endpoints                          = ["Microsoft.Storage", "Microsoft.KeyVault"]
+      private_endpoint_network_policies_enabled  = true
+      private_endpoint_service_endpoints_enabled = false
+    }
+  }
   hub_subnet_service_endpoints = var.hub_vnet_subnet_service_endpoints
   hub_deny_all_inbound         = false
 
   # The following locals are used to define the firewall for the hub resources
   enable_firewall         = var.enable_firewall
   enable_forced_tunneling = var.enable_force_tunneling
-  
+
   firewall_config = {
     sku_name          = "AZFW_VNet"
     sku_tier          = "Premium"
@@ -143,7 +151,7 @@ locals {
           protocols             = ["TCP"]
           source_addresses      = ["*"]
           destination_addresses = ["AzureMonitor"]
-          destination_ports     = ["80","443","12000"]
+          destination_ports     = ["80", "443", "12000"]
         }
       ]
     },
@@ -187,11 +195,11 @@ locals {
         {
           name              = "AppServiceEnvironment"
           source_addresses  = ["*"]
-          destination_fqdns = ["AppServiceEnvironment", "WindowsUpdate"]    
+          destination_fqdns = ["AppServiceEnvironment", "WindowsUpdate"]
           protocols = {
             type = "Https"
             port = 443
-          }      
+          }
         }
       ]
     }
