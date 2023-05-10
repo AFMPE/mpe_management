@@ -5,7 +5,7 @@
 SUMMARY: Module to to create scaffolding for the SCCA Compliant Mission Partner Environment
 */
 
-module "mod_codex_rg" {
+/* module "mod_codex_rg" {
   source  = "azurenoops/overlays-resource-group/azurerm"
   version = ">= 1.0.1"
 
@@ -18,4 +18,4 @@ module "mod_codex_rg" {
 
   // Tags
   add_tags = merge(local.hub_resources_tags,)
-}
+} */

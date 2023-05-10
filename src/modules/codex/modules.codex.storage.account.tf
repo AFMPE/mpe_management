@@ -4,7 +4,7 @@
 #---------------------------------------------------------
 # CodeX Storage Account Creation
 #----------------------------------------------------------
-module "codex_loganalytics_sa" {
+/* module "codex_loganalytics_sa" {
   source                   = "azurenoops/overlays-storage-account/azurerm"
   version                  = ">= 0.1.0"
   depends_on               = [module.mod_codex_rg]
@@ -18,6 +18,6 @@ module "codex_loganalytics_sa" {
   account_tier             = "Standard"
   account_replication_type = "LRS"
   # Locks
-  enable_resource_locks = var.enable_resource_locks
+  enable_resource_locks = local.enable_resource_locks
   add_tags              = merge(local.hub_resources_tags, )
-}
+} */
