@@ -85,15 +85,7 @@ locals {
   create_ddos_plan       = false
   create_network_watcher = true
   hub_subnet_addresses   = var.hub_vnet_subnet_address_prefixes
-  hub_vnet_subnets = {
-    "dmz_Subnet" = {
-      name                                       = "dmz"
-      address_prefixes                           = ["10.0.100.192/27"]
-      service_endpoints                          = ["Microsoft.Storage", "Microsoft.KeyVault"]
-      private_endpoint_network_policies_enabled  = true
-      private_endpoint_service_endpoints_enabled = false
-    }
-  }
+  hub_vnet_subnets = {}
   hub_subnet_service_endpoints = var.hub_vnet_subnet_service_endpoints
   hub_deny_all_inbound         = false
 
