@@ -1,5 +1,5 @@
 
-module "mod_virtual_machine" {
+/* module "mod_virtual_machine" {
   source  = "azurenoops/overlays-virtual-machine/azurerm"
   version = ">= 1.0.0"
 
@@ -85,16 +85,16 @@ module "mod_virtual_machine" {
 
   # (Optional) To activate Azure Monitoring and install log analytics agents 
   # (Optional) To save monitoring logs to storage, specify'storage_account_name'.    
-  log_analytics_workspace_id = azurerm_log_analytics_workspace.linux-log.id
+  #log_analytics_workspace_id = azurerm_log_analytics_workspace.linux-log.id
 
   # Deploy log analytics agents on a virtual machine. 
   # Customer id and primary shared key for Log Analytics workspace are required.
-  deploy_log_analytics_agent                 = true
-  log_analytics_customer_id                  = azurerm_log_analytics_workspace.linux-log.workspace_id
-  log_analytics_workspace_primary_shared_key = azurerm_log_analytics_workspace.linux-log.primary_shared_key
+  #deploy_log_analytics_agent                 = true
+  #log_analytics_customer_id                  = azurerm_log_analytics_workspace.linux-log.workspace_id
+  #log_analytics_workspace_primary_shared_key = azurerm_log_analytics_workspace.linux-log.primary_shared_key
 
   # Adding additional TAG's to your Azure resources
-  add_tags = {
-    Exmaple = "basic_linux_virtual_machine_using_existing_RG"
-  }
-}
+  #add_tags = {
+   # Exmaple = "basic_linux_virtual_machine_using_existing_RG"
+  #}
+#} */

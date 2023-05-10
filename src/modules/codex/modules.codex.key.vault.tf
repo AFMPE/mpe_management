@@ -1,5 +1,5 @@
 
-module "mod_key_vault" {  
+/* module "mod_key_vault" {  
   source                       = "azurenoops/overlays-key-vault/azurerm"
   version                      = ">= 1.0.0"
   existing_resource_group_name = module.mod_codex_rg.resource_group_name
@@ -40,4 +40,4 @@ module "mod_key_vault" {
 
   # Tags for Azure Resources
   add_tags = merge(local.hub_resources_tags, )
-}
+} */

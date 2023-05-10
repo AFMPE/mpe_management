@@ -12,7 +12,7 @@ AUTHOR/S: jspinella
 ###  Code X Configuations  ###
 ##############################
 
-/* module "mod_codex" {
+module "mod_codex" {
   source = "./modules/codex"
 
   required                       = var.required
@@ -21,4 +21,4 @@ AUTHOR/S: jspinella
   state_sa_rg                    = local.state_sa_rg
   state_sa_name                  = local.state_sa_name
   state_sa_container_name        = local.state_sa_container_name
-} */
+}
