@@ -9,8 +9,12 @@ module "mod_virtual_machine" {
   deploy_environment           = var.deploy_environment
   org_name                     = var.org_name
   workload_name                = var.workload_name
-  virtual_network_name         = data.terraform_remote_state.landing_zone.outputs.hub_vnet_name
-  subnet_name                  = data.terraform_remote_state.landing_zone.outputs.hub_subnet_name
+
+  # Lookup Network Information for VM deployment
+  existing_virtual_network_resource_group_name = data.terraform_remote_state.landing_zone.outputs.hub_resource_group_name
+  existing_virtual_network_name                = data.terraform_remote_state.landing_zone.outputs.hub_vnet_name
+  existing_subnet_name                         = data.terraform_remote_state.landing_zone.outputs.hub_subnet_name
+  existing_network_security_group_name         = azurerm_network_security_group.linux-nsg.name
 
   # This module supports a variety of pre-configured Linux and Windows distributions.
   # See the README.md file for more pre-defined Ubuntu, Centos, and RedHat images.
@@ -35,7 +39,6 @@ module "mod_virtual_machine" {
   # Network Seurity group port definitions for each Virtual Machine 
   # NSG association for all network interfaces to be added automatically.
   # If 'existing_network_security_group_name' is supplied, the module will use the existing NSG.
-  existing_network_security_group_name = azurerm_network_security_group.linux-nsg.name
   nsg_inbound_rules = [
     {
       name                   = "ssh"
